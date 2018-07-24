@@ -30,7 +30,7 @@ disableConcurrentBuilds()
  stage('Unit Tests') {
 	steps{
 		echo "------------>Unit Tests<------------"
-		sh 'gradle --b ./build.gradle test cleanTest test'
+		sh 'gradle --b ./build.gradle cleanTest test'
 	}
  }
  stage('Integration Tests') {
