@@ -1,5 +1,16 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "net.saliman:gradle-cobertura-plugin:2.2.7"
+    }
+}
+
 apply plugin: 'java'
 apply plugin: 'eclipse'
+apply plugin: 'jacoco'
+apply plugin: 'cobertura'
 
 sourceCompatibility = 1.5
 version = '1.0'
@@ -11,8 +22,12 @@ jar {
 }
 
 repositories {
-    mavenCentral()
-}
+
+	
+ maven {
+         url "http://ic-ppal.ceiba.com.co:8081/artifactory/remote-repos"
+ }
+} 
 
 dependencies {
     compile group: 'commons-collections', name: 'commons-collections', version: '3.2'
@@ -21,7 +36,13 @@ dependencies {
 
 test {
     systemProperties 'property': 'value'
+    
+    jacoco {
+		append = false		
+		destinationFile = file("build/jacoco/jacocoTest.exec")
+	}
 }
+
 
 uploadArchives {
     repositories {
@@ -29,4 +50,5 @@ uploadArchives {
            dirs 'repos'
        }
     }
+    
 }
