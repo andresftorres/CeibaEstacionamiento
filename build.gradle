@@ -23,6 +23,14 @@ jar {
 repositories {
     mavenCentral()
 }
+repositories {
+
+ maven {         
+ 	url "http://ic-ppal.ceiba.com.co:8081/artifactory/remote-repos"
+ }
+
+} 
+
 
 dependencies {
     compile group: 'commons-collections', name: 'commons-collections', version: '3.2'
