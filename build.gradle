@@ -10,7 +10,6 @@ buildscript {
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'jacoco'
-apply plugin: 'cobertura'
 
 sourceCompatibility = 1.5
 version = '1.0'
@@ -22,12 +21,8 @@ jar {
 }
 
 repositories {
-
-	
- maven {
-         url "http://ic-ppal.ceiba.com.co:8081/artifactory/remote-repos"
- }
-} 
+    mavenCentral()
+}
 
 dependencies {
     compile group: 'commons-collections', name: 'commons-collections', version: '3.2'
