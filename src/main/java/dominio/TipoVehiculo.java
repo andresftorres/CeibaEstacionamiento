@@ -26,7 +26,7 @@ public class TipoVehiculo {
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
-	public boolean isUsaCilindraje() {
+	public boolean getUsaCilindraje() {
 		return usaCilindraje;
 	}
 	public void setUsaCilindraje(boolean usaCilindraje) {
