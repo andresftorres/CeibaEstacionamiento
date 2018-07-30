@@ -1,7 +1,9 @@
 package CeibaEstacionamiento.unitaria;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
+
+
+import org.junit.Test;
 
 import CeibaEstacionamiento.testDataBuilder.TipoVehiculoTestDataBuilder;
 import CeibaEstacionamiento.testDataBuilder.VehiculoTestDataBuilder;
@@ -18,41 +20,29 @@ public class TipoVehiculoTest {
 	private static final double ADICIONALCILINDRAJE = 2000;
 	private static final int CAPACIDADMXIMA = 10;
 	
-	private static final String PLACA = "ABC123";
-	private static final TipoVehiculo TIPOVEHICULO = new TipoVehiculoTestDataBuilder().build();
-	private static final double CILINDRAJE = 1000;	
 	
 	
+	@Test
 	public void crearTipoVehiculo() {
 		// arrange
+		
 		TipoVehiculoTestDataBuilder TipoVehiculoDataBuilder = 
 				new TipoVehiculoTestDataBuilder().conDescripcion(DESCRIPCION).conUsaCilindraje(USACILINDRAJE)
 				.conCilindrajeMaximo(CILINDRAJEMAXIMO).conValorHora(VALORHORA).conValorDia(VALORDIA)
-				.conAdicionalCilindraje(ADICIONALCILINDRAJE).conCapacidadMaxima(CAPACIDADMXIMA);	
-		//OJO usar mock asqui
-		VehiculoTestDataBuilder VehiculoTestDataBuilder =
-				new VehiculoTestDataBuilder().conPlaca(PLACA).conTipoVehiculo(TIPOVEHICULO)
-				.conCilindraje(CILINDRAJE);
+				.conAdicionalCilindraje(ADICIONALCILINDRAJE).conCapacidadMaxima(CAPACIDADMXIMA);			
 		
 		// act
-		TipoVehiculo tipoMoto = TipoVehiculoDataBuilder.build();
-		//OJO usar mock asqui
-		VehiculoTestDataBuilder.conTipoVehiculo(tipoMoto);
-		//OJO usar mock asqui
-		Vehiculo motoAltoCilindraje = VehiculoTestDataBuilder.build();
+		TipoVehiculo tipoMoto = TipoVehiculoDataBuilder.build();	
 		
 		// assert
-		assertEquals(DESCRIPCION, motoAltoCilindraje.getTipoVehiculo().getDescripcion());
-		assertEquals(USACILINDRAJE, motoAltoCilindraje.getTipoVehiculo().getUsaCilindraje());
-		assertSame(CILINDRAJEMAXIMO, motoAltoCilindraje.getTipoVehiculo().getCilindrajeMaximo());
-		assertSame(VALORHORA, motoAltoCilindraje.getTipoVehiculo().getValorHora());
-		assertSame(VALORDIA, motoAltoCilindraje.getTipoVehiculo().getValorDia());
-		assertSame(ADICIONALCILINDRAJE, motoAltoCilindraje.getTipoVehiculo().getAdicionalCilindraje());
-		assertEquals(CAPACIDADMXIMA, motoAltoCilindraje.getTipoVehiculo().getCapacidadMaxima());
-
-		assertEquals(PLACA, motoAltoCilindraje.getPlaca());
-		assertSame(TIPOVEHICULO, motoAltoCilindraje.getTipoVehiculo());
-		assertSame(CILINDRAJE, motoAltoCilindraje.getCilindraje());
+		
+		assertEquals(DESCRIPCION, tipoMoto.getDescripcion());
+		assertEquals(USACILINDRAJE, tipoMoto.getUsaCilindraje());
+		assertEquals(CILINDRAJEMAXIMO, tipoMoto.getCilindrajeMaximo(), 0.0);
+		assertEquals(VALORHORA, tipoMoto.getValorHora(), 0.0);
+		assertEquals(VALORDIA, tipoMoto.getValorDia(), 0.0);
+		assertEquals(ADICIONALCILINDRAJE, tipoMoto.getAdicionalCilindraje(), 0.0);
+		assertEquals(CAPACIDADMXIMA, tipoMoto.getCapacidadMaxima());
 		
 		
 	}

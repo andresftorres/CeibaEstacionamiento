@@ -4,15 +4,14 @@ import dominio.TipoVehiculo;
 
 public class TipoVehiculoTestDataBuilder {
 	
-	private static final Double DOUBLENULL = (Double) null;
-	
-	private static final String DESCRIPCION = "AUTOMOVIL";
-	private static final boolean USACILINDRAJE = false;	
-	private static final double CILINDRAJEMAXIMO = DOUBLENULL;
-	private static final double VALORHORA = 1000;
-	private static final double VALORDIA = 8000;
-	private static final double ADICIONALCILINDRAJE = DOUBLENULL;
-	private static final int CAPACIDADMXIMA = 20;
+
+	private static final String DESCRIPCION = "MOTO";
+	private static final boolean USACILINDRAJE = true;	
+	private static final double CILINDRAJEMAXIMO = 500;
+	private static final double VALORHORA = 500;
+	private static final double VALORDIA = 4000;
+	private static final double ADICIONALCILINDRAJE = 2000;
+	private static final int CAPACIDADMXIMA = 10;
 	
 	private String descripcion;
 	private boolean usaCilindraje;
