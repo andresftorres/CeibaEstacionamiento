@@ -3,34 +3,24 @@ package parqueadero.dominio;
 public class Vehiculo {
 
 	private String placa;
-	private ConfigTarifas tarifaAplicada;
-	private double cilindraje;		
+	private String tipoVehiculo;
 	
-	public Vehiculo(String placa, ConfigTarifas tarifaAplicada, double cilindraje) {
+	public Vehiculo(String placa, String tipoVehiculo) {
+		super();
 		this.placa = placa;
-		this.tarifaAplicada = tarifaAplicada;
-		this.cilindraje = cilindraje;
+		this.tipoVehiculo = tipoVehiculo;
 	}
-	
 	public String getPlaca() {
-	 	return placa;
+		return placa;
 	}
 	public void setPlaca(String placa) {
 		this.placa = placa;
 	}
-	public ConfigTarifas getConfigTarifa() {
-		return tarifaAplicada;
+	public String getTipoVehiculo() {
+		return tipoVehiculo;
 	}
-	public void setConfigTarifa(ConfigTarifas tarifaAplicada) {
-		this.tarifaAplicada = tarifaAplicada;
+	public void setTipoVehiculo(String tipoVehiculo) {
+		this.tipoVehiculo = tipoVehiculo;
 	}
-	public double getCilindraje() {
-		return cilindraje;
-	}
-	public void setCilindraje(double cilindraje) {
-		this.cilindraje = cilindraje;
-	}
-	
-	
-	
+
 }

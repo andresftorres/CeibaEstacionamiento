@@ -1,13 +1,14 @@
-package parqueadero.servicios.serviciosImpl;
+package parqueadero.servicios.serviciosimpl;
 
+import parqueadero.exception.ParqueaderoException;
 import parqueadero.servicios.SalidaVehiculoServicio;
 
-public class SalidaVehiculosImpl implements SalidaVehiculoServicio{
+public class SalidaVehiculosImpl implements SalidaVehiculoServicio {
 
 	@Override
-	public void SalidaDeVehiculo() {
+	public void salidaDeVehiculos() throws ParqueaderoException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
