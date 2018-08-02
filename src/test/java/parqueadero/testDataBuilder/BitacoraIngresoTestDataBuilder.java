@@ -18,7 +18,6 @@ public class BitacoraIngresoTestDataBuilder {
 	
 	public BitacoraIngresoTestDataBuilder() {
 		super();
-		this.id = ID;
 		this.idVehiculo = IDVEHICULO;
 		this.fechaIngreso = FECHAINGRESO;
 		this.enPaqueadero = ENPARQUEADERO;
@@ -45,7 +44,7 @@ public class BitacoraIngresoTestDataBuilder {
 	}
 	
 	public BitacoraIngreso build() {
-		return new BitacoraIngreso(this.id, this.idVehiculo, this.fechaIngreso, this.enPaqueadero);
+		return new BitacoraIngreso( this.idVehiculo, this.fechaIngreso, this.enPaqueadero);
 	}
 	
 }

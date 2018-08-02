@@ -7,8 +7,8 @@ public class BitacoraSalida extends Bitacora {
 	private Calendar fechaSalida;
 	private double valorTotal;
 	
-	public BitacoraSalida(Long id, Long idVehiculo, Calendar fechaIngreso, Calendar fechaSalida, double valorTotal) {
-		super(id, idVehiculo, fechaIngreso);
+	public BitacoraSalida( Long idVehiculo, Calendar fechaIngreso, Calendar fechaSalida, double valorTotal) {
+		super(idVehiculo, fechaIngreso);
 		this.fechaSalida = fechaSalida;
 		this.valorTotal = valorTotal;
 	}

@@ -25,9 +25,8 @@ public class BitacoraIngresoEntity {
 	@Column(name = "EN_PARQUEADERO", nullable = false)
 	private boolean enPaqueadero;
 
-	public BitacoraIngresoEntity(Long id, Long idVehiculo, Calendar fechaIngreso, boolean enPaqueadero) {
+	public BitacoraIngresoEntity(Long idVehiculo, Calendar fechaIngreso, boolean enPaqueadero) {
 		super();
-		this.id = id;
 		this.idVehiculo = idVehiculo;
 		this.fechaIngreso = fechaIngreso;
 		this.enPaqueadero = enPaqueadero;

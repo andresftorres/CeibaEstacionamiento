@@ -28,10 +28,9 @@ public class BitacoraSalidaEntity {
 	@Column(name = "VALOR_TOTAL", nullable = false)
 	private double valorTotal;
 
-	public BitacoraSalidaEntity(Long id, Long idVehiculo, Calendar fechaIngreso, Calendar fechaSalida,
+	public BitacoraSalidaEntity(Long idVehiculo, Calendar fechaIngreso, Calendar fechaSalida,
 			double valorTotal) {
 		super();
-		this.id = id;
 		this.idVehiculo = idVehiculo;
 		this.fechaIngreso = fechaIngreso;
 		this.fechaSalida = fechaSalida;

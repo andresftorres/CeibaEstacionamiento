@@ -25,9 +25,8 @@ public class MotocicletaEntity {
 	@Column(name = "CILINDRAJE", nullable = false)
 	private double cilindraje;
 
-	public MotocicletaEntity(long id, String placa, String tipoVehiculo, double cilindraje) {
+	public MotocicletaEntity( String placa, String tipoVehiculo, double cilindraje) {
 		super();
-		this.id = id;
 		this.placa = placa;
 		this.tipoVehiculo = tipoVehiculo;
 		this.cilindraje = cilindraje;

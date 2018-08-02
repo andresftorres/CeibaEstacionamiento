@@ -36,9 +36,8 @@ public class TarifaParqueaderoEntity {
 	@Column(name = "adicionalCilindraje", nullable = true)
 	private double adicionalCilindraje;
 
-	public TarifaParqueaderoEntity(long id, String tipoVehiculo, double valorHora, double valorDia, int capacidadMaxima,
+	public TarifaParqueaderoEntity(String tipoVehiculo, double valorHora, double valorDia, int capacidadMaxima,
 			boolean usaCilindraje, double cilindrajeMaximo, double adicionalCilindraje) {
-		this.id = id;
 		this.tipoVehiculo = tipoVehiculo;
 		this.valorHora = valorHora;
 		this.valorDia = valorDia;

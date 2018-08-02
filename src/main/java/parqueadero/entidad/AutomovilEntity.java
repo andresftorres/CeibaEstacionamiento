@@ -22,10 +22,34 @@ public class AutomovilEntity {
 	@Column(name = "TIPOVEHICULO", nullable = false)
 	private String tipoVehiculo;
 
-	public AutomovilEntity(long id, String placa, String tipoVehiculo) {
-		this.id = id;
+	public AutomovilEntity(String placa, String tipoVehiculo) {
 		this.placa = placa;
 		this.tipoVehiculo = tipoVehiculo;
 	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public String getPlaca() {
+		return placa;
+	}
+
+	public void setPlaca(String placa) {
+		this.placa = placa;
+	}
+
+	public String getTipoVehiculo() {
+		return tipoVehiculo;
+	}
+
+	public void setTipoVehiculo(String tipoVehiculo) {
+		this.tipoVehiculo = tipoVehiculo;
+	}
+	
 
 }

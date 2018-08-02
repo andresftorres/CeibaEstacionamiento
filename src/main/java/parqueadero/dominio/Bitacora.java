@@ -8,9 +8,8 @@ public class Bitacora {
 	private Long idVehiculo;
 	private Calendar fechaIngreso;
 	
-	public Bitacora(Long id, Long idVehiculo, Calendar fechaIngreso) {
+	public Bitacora(Long idVehiculo, Calendar fechaIngreso) {
 		super();
-		this.id = id;
 		this.idVehiculo = idVehiculo;
 		this.fechaIngreso = fechaIngreso;
 	}

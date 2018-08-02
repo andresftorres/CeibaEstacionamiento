@@ -2,6 +2,7 @@ package parqueadero.dominio;
 
 public class TarifaParqueadero {
 
+	private Long id;
 	private String tipoVehiculo;
 	private double valorHora;
 	private double valorDia;
@@ -21,6 +22,15 @@ public class TarifaParqueadero {
 		this.cilindrajeMaximo = cilindrajeMaximo;
 		this.cobroExtraCilindraje = cobroExtraCilindraje;
 	}
+	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public String getTipoVehiculo() {
 		return tipoVehiculo;
 	}
