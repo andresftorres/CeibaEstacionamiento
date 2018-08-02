@@ -26,8 +26,7 @@ public class BitacoraSalidaTest {
 		// act
 		BitacoraSalida bitacoraSalidaTestPrueba = bitacoraSalidaTest.build();
 
-		// assert
-		assertEquals(ID, bitacoraSalidaTestPrueba.getId());		
+		// assert		
 		assertEquals(IDVEHICULO, bitacoraSalidaTestPrueba.getIdVehiculo());
 		assertEquals(FECHAINGRESO, bitacoraSalidaTestPrueba.getFechaIngreso());
 		assertEquals(FECHASALIDA, bitacoraSalidaTestPrueba.getFechaSalida());
