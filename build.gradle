@@ -14,6 +14,7 @@ buildscript {
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'jacoco'
+apply plugin: 'cobertura'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
@@ -24,6 +25,14 @@ sourceCompatibility = 1.8
 repositories {
 	mavenCentral()
 }
+
+cobertura {
+    coverageFormats = ['html','xml']    
+    coverageIgnoreTrivial = true     
+    coverageReportDir = new File("$buildDir/reports/cobertura") 
+}
+
+test.finalizedBy(project.tasks.cobertura)
 
 
 dependencies {
