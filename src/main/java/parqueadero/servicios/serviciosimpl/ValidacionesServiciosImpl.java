@@ -1,38 +1,87 @@
 package parqueadero.servicios.serviciosimpl;
 
-import parqueadero.exception.ParqueaderoException;
+
+import java.sql.Date;
+import java.util.Calendar;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import parqueadero.dominio.ParametrosParqueadero;
+import parqueadero.entidad.TarifaParqueaderoEntity;
+import parqueadero.entidad.TipoVehiculo;
+import parqueadero.repository.AutomovilRepository;
+import parqueadero.repository.BitacoraIngresoRepository;
+import parqueadero.repository.MotocicletaRepository;
+import parqueadero.repository.TarifaRepository;
 import parqueadero.servicios.ValidacionesServicios;
 
+@Service
 public class ValidacionesServiciosImpl implements ValidacionesServicios{
 
+	@Autowired
+	BitacoraIngresoRepository bitacoraIngresoRepo;
+	
+	@Autowired
+	MotocicletaRepository mototcicletaRepo;
+	
+	@Autowired
+	AutomovilRepository automovilRepo;
+	
+	@Autowired
+	TarifaRepository tarifaRepo;
+	
+	
 	@Override
-	public void validarTipoDeVehiculo(String tipoVehiculo) throws ParqueaderoException {
-		// TODO Auto-generated method stub
+	public boolean validarTipoDeVehiculo(String tipoVehiculo) {		
 		
+		return ParametrosParqueadero.TIPOS_DE_VEHICULOS_PERMITIDOS.contains(tipoVehiculo);
 	}
 
 	@Override
-	public void disponibilidadMotocicleta(Long idMotocicleta) throws ParqueaderoException {
-		// TODO Auto-generated method stub
+	public boolean disponibilidadMotocicleta() {
+		String tipoMotocileta = TipoVehiculo.MOTOCICLETA.getCodigo();
 		
+		Long motocicletasEnParqueadero = bitacoraIngresoRepo.cantidadMotocicletasEnParqueadero();
+		
+		TarifaParqueaderoEntity tarifaMotociletas = tarifaRepo.obtenerTarifaPorTipo(tipoMotocileta);
+		
+		return motocicletasEnParqueadero < tarifaMotociletas.getCapacidadMaxima();  
 	}
 
 	@Override
-	public void disponibilidadAutomovil(Long idAutomovil) throws ParqueaderoException {
-		// TODO Auto-generated method stub
+	public boolean disponibilidadAutomovil() {
+		String tipoAutomovil = TipoVehiculo.AUTOMOVIL.getCodigo();
 		
+		Long automovilesEnParqueadero = bitacoraIngresoRepo.cantidadAutomovilesEnParqueadero();
+		
+		TarifaParqueaderoEntity tarifaAutomoviles = tarifaRepo.obtenerTarifaPorTipo(tipoAutomovil);
+		
+		return automovilesEnParqueadero < tarifaAutomoviles.getCapacidadMaxima(); 
 	}
 
 	@Override
-	public void autorizaPlacaDiaActual(String placaVehiculo) throws ParqueaderoException {
-		// TODO Auto-generated method stub
+	public boolean autorizaPlacaDiaActual(String placaVehiculo, Calendar fechaIngreso) {		
+		String letraValidar = ParametrosParqueadero.LETRA_PARA_VALIDAR_PLACAS;
 		
+		if( letraValidar.equals(placaVehiculo.charAt(0)+"") ){			
+			Calendar fechaCalendar = Calendar.getInstance();
+			
+			fechaCalendar.setTime(fechaIngreso.getTime());
+			
+			int day = fechaCalendar.get(Calendar.DAY_OF_WEEK);			
+			
+			return day == Calendar.SUNDAY || day == Calendar.MONDAY;	
+		}else {
+			return true;
+		}						
 	}
 
 	@Override
-	public void vehiculoEnParqueadero(String placaVehiculo) throws ParqueaderoException {
-		// TODO Auto-generated method stub
+	public boolean vehiculoEnParqueadero(String placaVehiculo) {	
 		
+		return !bitacoraIngresoRepo.automovilEnParqueadero(placaVehiculo).getPlaca().isEmpty(); 
 	}
 
+	
 }

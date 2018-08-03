@@ -1,5 +1,5 @@
 package parqueadero.servicios.unitaria;
 
-public class ValidacionesSalida {
+public class ValidacionesSalidaTest {
 
 }

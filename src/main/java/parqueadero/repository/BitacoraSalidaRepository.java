@@ -6,16 +6,10 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import parqueadero.entidad.AutomovilEntity;
+import parqueadero.entidad.BitacoraIngresoEntity;
+import parqueadero.entidad.BitacoraSalidaEntity;
+import parqueadero.entidad.MotocicletaEntity;
 @Repository
-public interface AutomovilRepository extends JpaRepository<AutomovilEntity, Long> {
-
-	@Query("SELECT a.*" + 
-			"FROM Automovil a" + 
-			"WHERE a.ID_AUTOMOVIL = :ID_VEHICULO")
-	public AutomovilEntity obtenerVehiculoRegistrado(@Param("ID_VEHICULO") Long idVehiculo);
-	
-	
-	
-	
+public interface BitacoraSalidaRepository extends JpaRepository<BitacoraSalidaEntity, Long> {
 
 }

@@ -1,0 +1,41 @@
+package parqueadero.servicios.unitaria;
+
+import static org.junit.Assert.fail;
+
+import org.junit.Assert;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import parqueadero.dominio.Automovil;
+import parqueadero.dominio.ParametrosParqueadero;
+import parqueadero.entidad.TipoVehiculo;
+import parqueadero.servicios.IngresoVehiculoServicio;
+
+public class IngresoVehiculosTest {
+	
+	private static final String PLACANOAUTORIADA = "ABC-123";
+	private static final String TIPOVEHICULO = TipoVehiculo.AUTOMOVIL.getCodigo();
+	
+	@Autowired
+	IngresoVehiculoServicio ingresoService;	
+
+	@Test
+	public void registrarIngresoAutomovil_PlacaNoAutorizada() {
+
+		// arrange
+		Automovil automovil = new Automovil(PLACANOAUTORIADA, TIPOVEHICULO);
+
+		// act
+		try {
+			ingresoService.registrarIngresoAutomovil(automovil);
+			fail();
+
+		} catch (Throwable ex) {
+			// assert
+			Assert.assertNotEquals(ParametrosParqueadero.VEHICULO_NO_AUTORIZADO, ex.getMessage());
+		}
+
+	}
+
+	
+}

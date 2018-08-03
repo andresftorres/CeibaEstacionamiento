@@ -1,17 +1,17 @@
 package parqueadero.servicios;
 
-import parqueadero.exception.ParqueaderoException;
+import java.util.Calendar;
 
 public interface ValidacionesServicios {
 
-	public void validarTipoDeVehiculo(String tipoVehiculo) throws ParqueaderoException;
+	public boolean validarTipoDeVehiculo(String tipoVehiculo);
 	
-	public void disponibilidadMotocicleta(Long idMotocicleta) throws ParqueaderoException;
+	public boolean disponibilidadMotocicleta();
 	
-	public void disponibilidadAutomovil(Long idAutomovil) throws ParqueaderoException;
+	public boolean disponibilidadAutomovil();
 
-	public void autorizaPlacaDiaActual(String placaVehiculo) throws ParqueaderoException;
+	public boolean autorizaPlacaDiaActual(String placaVehiculo, Calendar fechaIngreso);
 
-	public void vehiculoEnParqueadero(String placaVehiculo) throws ParqueaderoException;
+	public boolean vehiculoEnParqueadero(String placaVehiculo);
 	
 }
