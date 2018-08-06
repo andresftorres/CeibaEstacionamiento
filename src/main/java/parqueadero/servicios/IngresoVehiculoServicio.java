@@ -1,14 +1,18 @@
 package parqueadero.servicios;
 
 import parqueadero.exception.ParqueaderoException;
+
+import java.util.Calendar;
+
 import parqueadero.dominio.Automovil;
 import parqueadero.dominio.Motocicleta;
-import parqueadero.entidad.AutomovilEntity;
+import parqueadero.entidad.BitacoraIngresoEntity;
 
 public interface IngresoVehiculoServicio {
 
-	public AutomovilEntity registrarIngresoAutomovil(Automovil automovil) throws ParqueaderoException;
+	public BitacoraIngresoEntity registrarIngresoAutomovil(Automovil automovil, Calendar fechaIngreso) throws ParqueaderoException;
 	
-	public void registrarIngresoMotocicleta(Motocicleta motocicleta) throws ParqueaderoException;
+	public BitacoraIngresoEntity registrarIngresoMotocicleta(Motocicleta motocicleta, Calendar fechaIngreso) throws ParqueaderoException;
 
+	public BitacoraIngresoEntity consultaIngresoActivo( String placa) throws ParqueaderoException; 
 }

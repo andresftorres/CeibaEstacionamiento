@@ -6,7 +6,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import parqueadero.entidad.TarifaParqueaderoEntity;
-@Repository
+
+@Repository("tarifarepositorio")
 public interface TarifaRepository extends JpaRepository<TarifaParqueaderoEntity, Long> {
 
 	@Query("SELECT a.*" +

@@ -1,6 +1,5 @@
 package parqueadero.integracion;
 
-import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import parqueadero.repository.AutomovilRepository;
@@ -14,10 +13,6 @@ public class SalidaVehiculos {
 	@Autowired
 	MotocicletaRepository motocicletaRepo;
 	
-	@Before
-	public void limpiar() {
-		automovilRepo.deleteAll();
-		motocicletaRepo.deleteAll();
-	}
+	
 	
 }

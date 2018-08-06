@@ -8,7 +8,8 @@ import org.springframework.stereotype.Repository;
 import parqueadero.entidad.AutomovilEntity;
 import parqueadero.entidad.BitacoraIngresoEntity;
 import parqueadero.entidad.MotocicletaEntity;
-@Repository
+
+@Repository("bitacoraingresorepositorio")
 public interface BitacoraIngresoRepository extends JpaRepository<BitacoraIngresoEntity, Long> {
 
 	@Query("SELECT COUNT(1)" + 
@@ -32,5 +33,16 @@ public interface BitacoraIngresoRepository extends JpaRepository<BitacoraIngreso
 			"WHERE a.enParqueadero = true" + 
 			"ANd b.placa = :placa ")
 	public MotocicletaEntity motocicletaEnParqueadero(@Param("placa") String placaVehiculo);
+	
+	@Query("SELECT a.* " + 
+			"FROM BitacoraIngreso a INNER JOIN Automovil b ON a.ID_VEHICULO = b.ID_VEHICULO" +
+			"WHERE a.enParqueadero = true" + 
+			"ANd b.placa = :placa ")
+	public BitacoraIngresoEntity bitacoraIngresoAutoByPlaca(@Param("placa") String placaVehiculo);
 
+	@Query("SELECT a.* " + 
+			"FROM BitacoraIngreso a INNER JOIN Motocicleta b ON a.ID_VEHICULO = b.ID_VEHICULO" +
+			"WHERE a.enParqueadero = true" + 
+			"ANd b.placa = :placa ")
+	public BitacoraIngresoEntity bitacoraIngresoMotoByPlaca(@Param("placa") String placaVehiculo);
 }

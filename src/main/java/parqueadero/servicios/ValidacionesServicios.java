@@ -12,6 +12,8 @@ public interface ValidacionesServicios {
 
 	public boolean autorizaPlacaDiaActual(String placaVehiculo, Calendar fechaIngreso);
 
-	public boolean vehiculoEnParqueadero(String placaVehiculo);
+	public boolean automovilEnParqueadero(String placaVehiculo);
+	
+	public boolean motocicletaEnParqueadero(String placaVehiculo);
 	
 }

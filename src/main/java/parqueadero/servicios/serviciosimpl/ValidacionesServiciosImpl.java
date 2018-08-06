@@ -1,34 +1,28 @@
 package parqueadero.servicios.serviciosimpl;
 
 
-import java.sql.Date;
 import java.util.Calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import parqueadero.dominio.ParametrosParqueadero;
 import parqueadero.entidad.TarifaParqueaderoEntity;
 import parqueadero.entidad.TipoVehiculo;
-import parqueadero.repository.AutomovilRepository;
 import parqueadero.repository.BitacoraIngresoRepository;
-import parqueadero.repository.MotocicletaRepository;
 import parqueadero.repository.TarifaRepository;
 import parqueadero.servicios.ValidacionesServicios;
 
-@Service
+@Service("validacionesservicios")
 public class ValidacionesServiciosImpl implements ValidacionesServicios{
 
 	@Autowired
+	@Qualifier("bitacoraingresorepositorio")
 	BitacoraIngresoRepository bitacoraIngresoRepo;
 	
 	@Autowired
-	MotocicletaRepository mototcicletaRepo;
-	
-	@Autowired
-	AutomovilRepository automovilRepo;
-	
-	@Autowired
+	@Qualifier("tarifarepositorio")
 	TarifaRepository tarifaRepo;
 	
 	
@@ -78,10 +72,17 @@ public class ValidacionesServiciosImpl implements ValidacionesServicios{
 	}
 
 	@Override
-	public boolean vehiculoEnParqueadero(String placaVehiculo) {	
+	public boolean automovilEnParqueadero(String placaVehiculo) {	
 		
 		return !bitacoraIngresoRepo.automovilEnParqueadero(placaVehiculo).getPlaca().isEmpty(); 
 	}
+	
+	@Override
+	public boolean motocicletaEnParqueadero(String placaVehiculo) {	
+		
+		return !bitacoraIngresoRepo.motocicletaEnParqueadero(placaVehiculo).getPlaca().isEmpty(); 
+	}
+
 
 	
 }

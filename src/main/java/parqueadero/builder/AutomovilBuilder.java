@@ -1,8 +1,11 @@
 package parqueadero.builder;
 
+import org.springframework.stereotype.Component;
+
 import parqueadero.dominio.Automovil;
 import parqueadero.entidad.AutomovilEntity;
 
+@Component("automovilbuilder")
 public final class AutomovilBuilder {
 
 	private AutomovilBuilder() {
