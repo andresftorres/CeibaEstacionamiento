@@ -1,44 +1,22 @@
 package parqueadero.servicios.unitaria;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
-import org.springframework.jca.cci.connection.TransactionAwareConnectionFactoryProxy;
-
 import parqueadero.servicios.IngresoVehiculoServicio;
-import parqueadero.testDataBuilder.TarifaParqTestDataBuilder;
 import parqueadero.dominio.Automovil;
 import parqueadero.dominio.Motocicleta;
 import parqueadero.dominio.ParametrosParqueadero;
-import parqueadero.dominio.Vehiculo;
-import parqueadero.entidad.BitacoraIngresoEntity;
-import parqueadero.entidad.TarifaParqueaderoEntity;
 import parqueadero.entidad.TipoVehiculo;
-import parqueadero.exception.ParqueaderoException;
 import parqueadero.repository.BitacoraIngresoRepository;
-import parqueadero.repository.TarifaRepository;
 
 public class ValidacionesIngresoTest {
 
@@ -46,7 +24,6 @@ public class ValidacionesIngresoTest {
 	private static final String PLACAAUTORIZADA = "BCD-123";
 	private static final String TIPOVEHICULO = TipoVehiculo.AUTOMOVIL.getCodigo();
 	private static final String TIPOVEHICULOBICICLETA = "B";
-	private static final int CANTIDAD_MAXIMA_MOTOS = 10;
 	private static final double CILINDRAJE = 600;
 	private static final String FECHA_SOLICITUD = "2017-05-26";
 

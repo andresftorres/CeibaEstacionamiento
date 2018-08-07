@@ -1,10 +1,13 @@
 package parqueadero.builder;
 
+import org.springframework.stereotype.Component;
+
 import parqueadero.dominio.TarifaParqueadero;
 import parqueadero.entidad.TarifaParqueaderoEntity;
 
+@Component
 public final class TarifaParqueaderoBuilder {
-
+	
 	private TarifaParqueaderoBuilder() {		
 	}
 
@@ -35,7 +38,7 @@ public final class TarifaParqueaderoBuilder {
 			return null;
 		}
 
-		TarifaParqueaderoEntity tarifaParqueaderoEntity = new TarifaParqueaderoEntity(
+		return  new TarifaParqueaderoEntity(
 				tarifaParqueadero.getTipoVehiculo(), 
 				tarifaParqueadero.getValorHora(), 
 				tarifaParqueadero.getValorDia(), 
@@ -43,11 +46,7 @@ public final class TarifaParqueaderoBuilder {
 				tarifaParqueadero.getTieneCilindraje(), 
 				tarifaParqueadero.getCilindrajeMaximo(), 
 				tarifaParqueadero.getCobroExtraCilindraje()
-		);
-
-		tarifaParqueaderoEntity.setId(tarifaParqueadero.getId());
-
-		return tarifaParqueaderoEntity;
+		);		 
 	}
 
 }

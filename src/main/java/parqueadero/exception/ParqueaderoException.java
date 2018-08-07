@@ -1,6 +1,6 @@
 package parqueadero.exception;
 
-public class ParqueaderoException extends RuntimeException {
+public class ParqueaderoException extends Exception {
 
 	private static final long serialVersionUID = 1L;
 

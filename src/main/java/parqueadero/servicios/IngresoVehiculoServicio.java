@@ -13,6 +13,6 @@ public interface IngresoVehiculoServicio {
 	public BitacoraIngresoEntity registrarIngresoAutomovil(Automovil automovil, Calendar fechaIngreso) throws ParqueaderoException;
 	
 	public BitacoraIngresoEntity registrarIngresoMotocicleta(Motocicleta motocicleta, Calendar fechaIngreso) throws ParqueaderoException;
-
-	public BitacoraIngresoEntity consultaIngresoActivo( String placa) throws ParqueaderoException; 
+	
+	public BitacoraIngresoEntity consultaIngresoActivo(String placa);
 }

@@ -1,19 +1,24 @@
 package parqueadero.dominio;
 
-public class Vehiculo {
+import java.util.Calendar;
+
+public class RespuestaConsulta {
 
 	private String placa;
 	private String tipoVehiculo;
+	private Calendar fechingreso;
 	
-	public Vehiculo() {
+	public RespuestaConsulta(){
 		
 	}
 	
-	public Vehiculo(String placa, String tipoVehiculo) {
+	public RespuestaConsulta(String placa, String tipoVehiculo, Calendar fechingreso) {
 		super();
 		this.placa = placa;
 		this.tipoVehiculo = tipoVehiculo;
+		this.fechingreso = fechingreso;
 	}
+	
 	public String getPlaca() {
 		return placa;
 	}
@@ -26,5 +31,12 @@ public class Vehiculo {
 	public void setTipoVehiculo(String tipoVehiculo) {
 		this.tipoVehiculo = tipoVehiculo;
 	}
-
+	public Calendar getFechingreso() {
+		return fechingreso;
+	}
+	public void setFechingreso(Calendar fechingreso) {
+		this.fechingreso = fechingreso;
+	}
+	
+	
 }

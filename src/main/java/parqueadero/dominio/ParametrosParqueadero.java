@@ -10,6 +10,7 @@ public final class ParametrosParqueadero {
 	public static final String SIN_CUPO_PARA_AUTOMOVIL = "No hay cupo para Automovil.";
 	public static final String SIN_CUPO_PARA_MOTOCICLETA = "No hay cupo para Motocicleta.";
 	public static final String EL_VEHICULO_NO_ESTA_EN_EL_PARQUEADERO = "El vehiculo no se encuentra en el parqueadero.";
+	public static final String EL_VEHICULO_YA_ESTA_EN_EL_PARQUEADERO = "El vehiculo se encuentra actualmente en el parqueadero.";
 	
 	public static final String TIPOS_DE_VEHICULOS_PERMITIDOS = "A,M";	
 	public static final String LETRA_PARA_VALIDAR_PLACAS = "A";

@@ -10,9 +10,10 @@ import parqueadero.entidad.TarifaParqueaderoEntity;
 @Repository("tarifarepositorio")
 public interface TarifaRepository extends JpaRepository<TarifaParqueaderoEntity, Long> {
 
-	@Query("SELECT a.*" +
+	@Query(value="SELECT a.*" +
 			"FROM Tarifa a " +
-			"WHERE a.TIPO_VEHICULO = :TIPO_VEHICULO")
+			"WHERE a.TIPO_VEHICULO = :TIPO_VEHICULO",
+			nativeQuery = true)
 	public TarifaParqueaderoEntity obtenerTarifaPorTipo (@Param("TIPO_VEHICULO") String tipoVehiculo);
 
 }

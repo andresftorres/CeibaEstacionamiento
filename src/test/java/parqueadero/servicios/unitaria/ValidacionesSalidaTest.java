@@ -4,12 +4,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
-import parqueadero.entidad.BitacoraSalidaEntity;
 import parqueadero.entidad.TipoVehiculo;
-import parqueadero.exception.ParqueaderoException;
-import parqueadero.servicios.IngresoVehiculoServicio;
 import parqueadero.servicios.SalidaVehiculoServicio;
-import parqueadero.servicios.serviciosimpl.SalidaVehiculosImpl;
 
 public class ValidacionesSalidaTest {
 

@@ -23,7 +23,7 @@ import parqueadero.servicios.IngresoVehiculoServicio;
 import parqueadero.servicios.SalidaVehiculoServicio;
 import parqueadero.servicios.ValidacionesServicios;
 
-@Service("salidavehiculosservicios")
+@Service
 public class SalidaVehiculosImpl implements SalidaVehiculoServicio {
 
 	public static final double HORA_EN_MILISEGUNDOS = (1000 * 60 * 60);
@@ -31,31 +31,24 @@ public class SalidaVehiculosImpl implements SalidaVehiculoServicio {
 	public static final boolean NO_ESTA_EN_PARQUEADERO = false;
 	
 	@Autowired
-	@Qualifier("bitacorasalidarepositorio")
 	BitacoraSalidaRepository bitacoraSalidaRepo;
 
 	@Autowired
-	@Qualifier("bitacoraingresorepositorio")
 	BitacoraIngresoRepository bitacoraIngresoRepo;
 	
 	@Autowired
-	@Qualifier("motocicletarepositorio")
 	MotocicletaRepository mototcicletaRepo;
 	
 	@Autowired
-	@Qualifier("automovilrepositorio")
 	AutomovilRepository automovilRepo;
 	
 	@Autowired
-	@Qualifier("tarifarepositorio")
 	TarifaRepository tarifaRepo;
 	
 	@Autowired
-	@Qualifier("validacionesservicios")
 	ValidacionesServicios validacionesServicios;
 	
 	@Autowired
-	@Qualifier("ingresovehiculosservicios")
 	IngresoVehiculoServicio ingresoVehiculoServicio;
 	
 
@@ -72,14 +65,9 @@ public class SalidaVehiculosImpl implements SalidaVehiculoServicio {
 			throw new ParqueaderoException(ParametrosParqueadero.TIPO_DE_VEHICULO_NO_AUTORIADO);
 		}
 		
-		if( !validacionesServicios.motocicletaEnParqueadero(automovilEntity.getPlaca()) )  {
+		if( !validacionesServicios.automovilEnParqueadero(automovilEntity.getPlaca()) )  {
 			throw new ParqueaderoException(ParametrosParqueadero.EL_VEHICULO_NO_ESTA_EN_EL_PARQUEADERO);
-		}
-		
-		if( !validacionesServicios.disponibilidadMotocicleta() ) {
-			throw new ParqueaderoException(ParametrosParqueadero.SIN_CUPO_PARA_AUTOMOVIL);
 		}	
-		
 		
 		BitacoraIngresoEntity bitacoraIngresoEntity = ingresoVehiculoServicio.consultaIngresoActivo(automovilEntity.getPlaca());	
 		
@@ -121,11 +109,7 @@ public class SalidaVehiculosImpl implements SalidaVehiculoServicio {
 		
 		if( !validacionesServicios.motocicletaEnParqueadero(motocicletaEntity.getPlaca()) )  {
 			throw new ParqueaderoException(ParametrosParqueadero.EL_VEHICULO_NO_ESTA_EN_EL_PARQUEADERO);
-		}
-		
-		if( !validacionesServicios.disponibilidadMotocicleta() ) {
-			throw new ParqueaderoException(ParametrosParqueadero.SIN_CUPO_PARA_MOTOCICLETA);
-		}			
+		}					
 		
 		BitacoraIngresoEntity bitacoraIngresoEntity = ingresoVehiculoServicio.consultaIngresoActivo(motocicletaEntity.getPlaca());	
 		bitacoraIngresoEntity.setEnPaqueadero(NO_ESTA_EN_PARQUEADERO);

@@ -8,7 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity(name = "BitacoraIngreso")
+@Entity(name = "bitacoraingreso")
 public class BitacoraIngresoEntity {
 
 	@Id
@@ -22,9 +22,13 @@ public class BitacoraIngresoEntity {
 	@Column(name = "FECHA_INGRESO", nullable = false)
 	private Calendar fechaIngreso;
 
-	@Column(name = "EN_PARQUEADERO", nullable = false)
+	@Column(name = "ENPARQUEADERO", nullable = false)
 	private boolean enPaqueadero;
 
+	public BitacoraIngresoEntity(){
+		
+	}
+	
 	public BitacoraIngresoEntity(Long idVehiculo, Calendar fechaIngreso, boolean enPaqueadero) {
 		super();
 		this.idVehiculo = idVehiculo;

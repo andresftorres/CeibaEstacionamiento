@@ -28,6 +28,9 @@ public class BitacoraSalidaEntity {
 	@Column(name = "VALOR_TOTAL", nullable = false)
 	private double valorTotal;
 
+	public BitacoraSalidaEntity(){
+	}
+	
 	public BitacoraSalidaEntity(Long idVehiculo, Calendar fechaIngreso, Calendar fechaSalida,
 			double valorTotal) {
 		super();

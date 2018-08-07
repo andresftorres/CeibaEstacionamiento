@@ -9,9 +9,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import parqueadero.dominio.Automovil;
-import parqueadero.dominio.BitacoraIngreso;
 import parqueadero.dominio.ParametrosParqueadero;
-import parqueadero.entidad.BitacoraIngresoEntity;
 import parqueadero.entidad.TipoVehiculo;
 import parqueadero.servicios.IngresoVehiculoServicio;
 

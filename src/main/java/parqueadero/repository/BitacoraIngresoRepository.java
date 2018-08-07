@@ -9,40 +9,48 @@ import parqueadero.entidad.AutomovilEntity;
 import parqueadero.entidad.BitacoraIngresoEntity;
 import parqueadero.entidad.MotocicletaEntity;
 
-@Repository("bitacoraingresorepositorio")
+@Repository
 public interface BitacoraIngresoRepository extends JpaRepository<BitacoraIngresoEntity, Long> {
 
-	@Query("SELECT COUNT(1)" + 
-			"FROM BitacoraIngreso a INNER JOIN Automovil b ON a.ID_VEHICULO = b.ID_VEHICULO" +
-			"WHERE a.enParqueadero = true")
+	@Query(value="SELECT COUNT(1)" + 
+			"FROM BITACORAINGRESO A INNER JOIN AUTOMOVIL B ON A.ID_VEHICULO = B.ID_VEHICULO " +
+			"WHERE A.ENPARQUEADERO = TRUE ",
+			nativeQuery = true)
 	public Long cantidadAutomovilesEnParqueadero();
 
-	@Query("SELECT COUNT(1)" + 
-			"FROM BitacoraIngreso a INNER JOIN Motocicleta b ON a.ID_VEHICULO = b.ID_VEHICULO" +
-			"WHERE a.enParqueadero = true")
+	@Query(value="SELECT COUNT(1)" + 
+			"FROM BITACORAINGRESO A INNER JOIN MOTOCICLETA B ON A.ID_VEHICULO = B.ID_VEHICULO " +
+			"WHERE A.ENPARQUEADERO = TRUE ",
+			nativeQuery = true)
 	public Long cantidadMotocicletasEnParqueadero();
 
-	@Query("SELECT b.* " + 
-			"FROM BitacoraIngreso a INNER JOIN Automovil b ON a.ID_VEHICULO = b.ID_VEHICULO" +
-			"WHERE a.enParqueadero = true" + 
-			"ANd b.placa = :placa ")
-	public AutomovilEntity automovilEnParqueadero(@Param("placa") String placaVehiculo);
+	@Query(value="SELECT B.* " + 
+			"FROM BITACORAINGRESO A INNER JOIN AUTOMOVIL B ON A.ID_VEHICULO = B.ID_VEHICULO " +
+			"WHERE A.ENPARQUEADERO = TRUE " + 
+			"AND B.PLACA = :PLACA ",
+			nativeQuery = true)
+	public AutomovilEntity automovilEnParqueadero(@Param("PLACA") String placaVehiculo);
 
-	@Query("SELECT b.* " + 
-			"FROM BitacoraIngreso a INNER JOIN Motocicleta b ON a.ID_VEHICULO = b.ID_VEHICULO" +
-			"WHERE a.enParqueadero = true" + 
-			"ANd b.placa = :placa ")
-	public MotocicletaEntity motocicletaEnParqueadero(@Param("placa") String placaVehiculo);
+	@Query(value="SELECT B.* " + 
+			"FROM BITACORAINGRESO A INNER JOIN MOTOCICLETA B ON A.ID_VEHICULO = B.ID_VEHICULO " +
+			"WHERE A.ENPARQUEADERO = TRUE " + 
+			"AND B.PLACA = :PLACA ",
+			nativeQuery = true)
+	public MotocicletaEntity motocicletaEnParqueadero(@Param("PLACA") String placaVehiculo);
 	
-	@Query("SELECT a.* " + 
-			"FROM BitacoraIngreso a INNER JOIN Automovil b ON a.ID_VEHICULO = b.ID_VEHICULO" +
-			"WHERE a.enParqueadero = true" + 
-			"ANd b.placa = :placa ")
-	public BitacoraIngresoEntity bitacoraIngresoAutoByPlaca(@Param("placa") String placaVehiculo);
+	@Query(value="SELECT A.* " + 
+			"FROM BITACORAINGRESO A INNER JOIN AUTOMOVIL B ON A.ID_VEHICULO = B.ID_VEHICULO " +
+			"WHERE A.ENPARQUEADERO = TRUE " + 
+			"AND B.PLACA = :PLACA ",
+			nativeQuery = true)
+	public BitacoraIngresoEntity bitacoraIngresoAutoByPlaca(@Param("PLACA") String placaVehiculo);
 
-	@Query("SELECT a.* " + 
-			"FROM BitacoraIngreso a INNER JOIN Motocicleta b ON a.ID_VEHICULO = b.ID_VEHICULO" +
-			"WHERE a.enParqueadero = true" + 
-			"ANd b.placa = :placa ")
-	public BitacoraIngresoEntity bitacoraIngresoMotoByPlaca(@Param("placa") String placaVehiculo);
+	@Query(value="SELECT A.* " + 
+			"FROM BITACORAINGRESO A INNER JOIN MOTOCICLETA B ON A.ID_VEHICULO = B.ID_VEHICULO " +
+			"WHERE A.ENPARQUEADERO = TRUE " + 
+			"AND B.PLACA = :PLACA ",
+			nativeQuery = true)
+	public BitacoraIngresoEntity bitacoraIngresoMotoByPlaca(@Param("PLACA") String placaVehiculo);
+	
+	
 }

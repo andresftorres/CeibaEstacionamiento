@@ -4,7 +4,6 @@ package parqueadero.servicios.serviciosimpl;
 import java.util.Calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import parqueadero.dominio.ParametrosParqueadero;
@@ -14,15 +13,13 @@ import parqueadero.repository.BitacoraIngresoRepository;
 import parqueadero.repository.TarifaRepository;
 import parqueadero.servicios.ValidacionesServicios;
 
-@Service("validacionesservicios")
+@Service
 public class ValidacionesServiciosImpl implements ValidacionesServicios{
 
 	@Autowired
-	@Qualifier("bitacoraingresorepositorio")
 	BitacoraIngresoRepository bitacoraIngresoRepo;
 	
 	@Autowired
-	@Qualifier("tarifarepositorio")
 	TarifaRepository tarifaRepo;
 	
 	
@@ -34,11 +31,11 @@ public class ValidacionesServiciosImpl implements ValidacionesServicios{
 
 	@Override
 	public boolean disponibilidadMotocicleta() {
-		String tipoMotocileta = TipoVehiculo.MOTOCICLETA.getCodigo();
+		String tipoMotocicleta = TipoVehiculo.MOTOCICLETA.getCodigo();
 		
 		Long motocicletasEnParqueadero = bitacoraIngresoRepo.cantidadMotocicletasEnParqueadero();
 		
-		TarifaParqueaderoEntity tarifaMotociletas = tarifaRepo.obtenerTarifaPorTipo(tipoMotocileta);
+		TarifaParqueaderoEntity tarifaMotociletas = tarifaRepo.obtenerTarifaPorTipo(tipoMotocicleta);
 		
 		return motocicletasEnParqueadero < tarifaMotociletas.getCapacidadMaxima();  
 	}
@@ -74,13 +71,13 @@ public class ValidacionesServiciosImpl implements ValidacionesServicios{
 	@Override
 	public boolean automovilEnParqueadero(String placaVehiculo) {	
 		
-		return !bitacoraIngresoRepo.automovilEnParqueadero(placaVehiculo).getPlaca().isEmpty(); 
+		return bitacoraIngresoRepo.automovilEnParqueadero(placaVehiculo) != null; 
 	}
 	
 	@Override
 	public boolean motocicletaEnParqueadero(String placaVehiculo) {	
 		
-		return !bitacoraIngresoRepo.motocicletaEnParqueadero(placaVehiculo).getPlaca().isEmpty(); 
+		return bitacoraIngresoRepo.motocicletaEnParqueadero(placaVehiculo) != null; 
 	}
 
 

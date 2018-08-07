@@ -11,7 +11,7 @@ import javax.persistence.Id;
 public class TarifaParqueaderoEntity {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID_CONFIG_TARIFA", nullable = false)
 	private long id;
 
