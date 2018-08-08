@@ -7,8 +7,12 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import parqueadero.builder.BitacoraIngresoBuilder;
+import parqueadero.builder.VehiculoBuilder;
+import parqueadero.dominio.BitacoraIngreso;
 import parqueadero.dominio.ParametrosParqueadero;
 import parqueadero.dominio.RespuestaConsulta;
+import parqueadero.dominio.Vehiculo;
 import parqueadero.entidad.BitacoraIngresoEntity;
 import parqueadero.entidad.VehiculoEntity;
 import parqueadero.exception.ParqueaderoException;
@@ -31,13 +35,13 @@ public class ConsultasServiciosImpl implements ConsultaServicios {
 	@Override
 	public RespuestaConsulta consultaVehiculo(String placa) throws ParqueaderoException {
 
-		BitacoraIngresoEntity bitacoraActiva = bitacoraingresos.bitacoraIngresoByPlaca(placa);		
-		Long idVehiculo = bitacoraActiva.getVehiculo().getId();		
-		Optional<VehiculoEntity> vehiculoEnParquadero = vehiculoRepo.findById(idVehiculo);
+		BitacoraIngreso bitacoraActiva = bitacoraingresos.bitacoraIngresoByPlaca(placa);		
+		String placaVehiculo = bitacoraActiva.getVehiculo().getPlaca();		
+		Vehiculo vehiculoEnParquadero = vehiculoRepo.findByPlaca(placaVehiculo);
 		
-		VehiculoEntity vehiculoRespuesta;
-		if( vehiculoEnParquadero.isPresent() ) {
-			vehiculoRespuesta = vehiculoEnParquadero.get();
+		Vehiculo vehiculoRespuesta;
+		if( vehiculoEnParquadero != null ) {
+			vehiculoRespuesta = vehiculoEnParquadero;
 			
 			return crearRespuesta(bitacoraActiva, vehiculoRespuesta);
 		} else {
@@ -66,8 +70,8 @@ public class ConsultasServiciosImpl implements ConsultaServicios {
 
 					objetosRespuestaConslta.add(
 							crearRespuesta(
-									bitacoraActual, 
-									vehiculoEntity
+									BitacoraIngresoBuilder.convertirADominio(bitacoraActual), 
+									VehiculoBuilder.convertirADominio(vehiculoEntity)
 							)
 					);
 				}
@@ -77,9 +81,10 @@ public class ConsultasServiciosImpl implements ConsultaServicios {
 	}
 
 	@Override
-	public RespuestaConsulta crearRespuesta(BitacoraIngresoEntity biacoraActiva, VehiculoEntity vehiculoenParqueadero) {
+	public RespuestaConsulta crearRespuesta(BitacoraIngreso biacoraActiva, Vehiculo vehiculoenParqueadero) {
 		return new RespuestaConsulta(vehiculoenParqueadero.getPlaca(),
 				vehiculoenParqueadero.getTipoVehiculo().getDescripcion(), biacoraActiva.getFechaIngreso(), null, null);
 	}
 
+    
 }

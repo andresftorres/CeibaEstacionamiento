@@ -32,8 +32,10 @@ public class BitacoraIngresoControlador {
 		try {
 			return new ResponseEntity<>(ingresoVehiculoServicio.registrarIngresoVehiculo(automovil, calculaFechaIngreso()), HttpStatus.OK );
 		} catch (ParqueaderoException e) {			
-			LOGGER.info("ParqueaderoException ", e);
-			return new ResponseEntity<>( new RespuestaPeticion( e.getDescripion(), e.getMessage() ), HttpStatus.OK);					
+			LOGGER.error("ParqueaderoException ", e);
+			
+			return new ResponseEntity<>( new RespuestaPeticion( e.getMessage(), e.getDescripion()), HttpStatus.OK);
+			
 		}
 	}	
 			

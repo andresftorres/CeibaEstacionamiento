@@ -33,7 +33,7 @@ public class BitacoraSalidaControlador {
 			
 		} catch (ParqueaderoException e) {
 			LOGGER.info("ParqueaderoException ", e);			
-			return new ResponseEntity<>( new RespuestaPeticion(e.getDescripion() , e.getMessage()) ,HttpStatus.OK);
+			return new ResponseEntity<>( new RespuestaPeticion(e.getMessage(), e.getDescripion()) ,HttpStatus.OK);
 		}
 		
 	}

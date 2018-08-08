@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import parqueadero.dominio.ParametrosParqueadero;
 import parqueadero.entidad.TipoVehiculo;
-import parqueadero.exception.ParqueaderoException;
+
 import parqueadero.factorypattern.ConstantesTipoVehiculo;
 import parqueadero.factorypattern.FactoryRestriccionesTarifas;
 import parqueadero.repository.BitacoraIngresoRepository;

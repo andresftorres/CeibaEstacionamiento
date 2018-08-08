@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import parqueadero.builder.VehiculoBuilder;
+import parqueadero.dominio.BitacoraIngreso;
 import parqueadero.dominio.ParametrosParqueadero;
 import parqueadero.dominio.RespuestaPeticion;
 import parqueadero.dominio.Vehiculo;
@@ -49,15 +50,15 @@ public class IngresoVehiculosImpl implements IngresoVehiculoServicio {
 			throw new ParqueaderoException(ParametrosParqueadero.SIN_CUPO_PARA_VEHICULO);
 		}
 				
-		VehiculoEntity vehiculoEntity = vehiculoRepo.findByPlaca(vehiculo.getPlaca());
+		Vehiculo vehiculoAIngresar = vehiculoRepo.findByPlaca(vehiculo.getPlaca());
 		
 		VehiculoEntity vehiculoRegistrado;
-		if( vehiculoEntity == null) {		
+		if( vehiculoAIngresar == null) {		
 		
-			vehiculoEntity = VehiculoBuilder.convertirAEntity(vehiculo);		
-			vehiculoRegistrado = vehiculoRepo.save(vehiculoEntity);			
+			vehiculoAIngresar = vehiculo;		
+			vehiculoRegistrado = vehiculoRepo.save( VehiculoBuilder.convertirAEntity(vehiculoAIngresar));			
 		} else {
-			vehiculoRegistrado = vehiculoEntity;
+			vehiculoRegistrado = VehiculoBuilder.convertirAEntity(vehiculoAIngresar);
 		}		
 		
 		BitacoraIngresoEntity bitacoraIngresoEntity = new BitacoraIngresoEntity(
@@ -71,7 +72,7 @@ public class IngresoVehiculosImpl implements IngresoVehiculoServicio {
 	}
 
 	@Override
-	public BitacoraIngresoEntity consultaIngresoActivo(String placa) {
+	public BitacoraIngreso consultaIngresoActivo(String placa) {
 
 		return bitacoraIngresoRepo.bitacoraIngresoByPlaca(placa);
 		

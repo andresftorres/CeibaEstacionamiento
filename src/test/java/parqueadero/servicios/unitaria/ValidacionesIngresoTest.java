@@ -28,11 +28,9 @@ public class ValidacionesIngresoTest {
 	private static final double SIN_CILINDRAJE = Double.NaN;
 
 	@Autowired
-	@Qualifier("ingresovehiculosservicios")
 	IngresoVehiculoServicio ingresoService;
 	
 	@Autowired
-	@Qualifier("bitacoraingresorepositorio")
 	BitacoraIngresoRepository bitacoraingresoRepo;
 
 	@Test

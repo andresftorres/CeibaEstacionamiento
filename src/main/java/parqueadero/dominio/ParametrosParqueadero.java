@@ -9,7 +9,7 @@ public final class ParametrosParqueadero {
 
 	//Mensajes
 	public static final String VEHICULO_NO_AUTORIZADO = "El vehiculo no esta autorizado para ingresar al parqueadero porque no es un dia habil.";
-	public static final String TIPO_DE_VEHICULO_NO_AUTORIZADO = "El vehculo no esta autorizado para ingresar a al parqueadero.";
+	public static final String TIPO_DE_VEHICULO_NO_AUTORIZADO = "El vehiculo no esta autorizado para ingresar a al parqueadero.";
 	public static final String SIN_CUPO_PARA_VEHICULO = "No hay cupo para el vehiculo.";
 	public static final String EL_VEHICULO_NO_ESTA_EN_EL_PARQUEADERO = "El vehiculo no se encuentra en el parqueadero.";
 	public static final String EL_VEHICULO_YA_ESTA_EN_EL_PARQUEADERO = "El vehiculo se encuentra actualmente en el parqueadero.";

@@ -6,11 +6,14 @@ import java.util.Calendar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import parqueadero.builder.BitacoraIngresoBuilder;
+import parqueadero.builder.VehiculoBuilder;
+import parqueadero.dominio.BitacoraIngreso;
 import parqueadero.dominio.ParametrosParqueadero;
 import parqueadero.dominio.RespuestaPeticion;
+import parqueadero.dominio.Vehiculo;
 import parqueadero.entidad.BitacoraIngresoEntity;
 import parqueadero.entidad.BitacoraSalidaEntity;
-import parqueadero.entidad.VehiculoEntity;
 import parqueadero.exception.ParqueaderoException;
 import parqueadero.factorypattern.ConstantesTipoVehiculo;
 import parqueadero.factorypattern.FactoryRestriccionesTarifas;
@@ -47,34 +50,34 @@ public class SalidaVehiculosImpl implements SalidaVehiculoServicio {
 	@Override
 	public RespuestaPeticion registrarSalidaDeVehiculo(String placa) throws ParqueaderoException {
 		
-		VehiculoEntity vehiculoEntity = vehiculoRepo.findByPlaca(placa);		
+		Vehiculo vehiculo = vehiculoRepo.findByPlaca(placa);		
 		
-		if( !validacionesServicios.vehiculoEnParqueadero(vehiculoEntity.getPlaca()) )  {
+		if( !validacionesServicios.vehiculoEnParqueadero(vehiculo.getPlaca()) )  {
 			throw new ParqueaderoException(ParametrosParqueadero.EL_VEHICULO_NO_ESTA_EN_EL_PARQUEADERO);
 		}					
 		
-		BitacoraIngresoEntity bitacoraIngresoEntity = ingresoVehiculoServicio.consultaIngresoActivo(vehiculoEntity.getPlaca());	
-		bitacoraIngresoEntity.setEnPaqueadero(NO_ESTA_EN_PARQUEADERO);
+		BitacoraIngreso bitacoraIngreso = ingresoVehiculoServicio.consultaIngresoActivo(vehiculo.getPlaca());	
+		bitacoraIngreso.setEnPaqueadero(NO_ESTA_EN_PARQUEADERO);		
 		
-		bitacoraIngresoRepo.save(bitacoraIngresoEntity);
+		BitacoraIngresoEntity biacoraIngresoEntity = bitacoraIngresoRepo.save(BitacoraIngresoBuilder.convertirAEntity(bitacoraIngreso));
 		
 		Calendar fechaSalida = Calendar.getInstance();		
 		
-	    ConstantesTipoVehiculo configuracionVehiculo = FactoryRestriccionesTarifas.obtenerDatosConfiguracion( vehiculoEntity.getTipoVehiculo());    
+	    ConstantesTipoVehiculo configuracionVehiculo = FactoryRestriccionesTarifas.obtenerDatosConfiguracion( vehiculo.getTipoVehiculo());    
 		    
 		double valorTotal = calcularValorAPagar( 
-				bitacoraIngresoEntity, 
+				biacoraIngresoEntity, 
 				fechaSalida, 
 				configuracionVehiculo,
-				vehiculoEntity.getCilindraje()
+				vehiculo.getCilindraje()
 		);		
 		
 		BitacoraSalidaEntity bitacoraSalidaEntity = new BitacoraSalidaEntity(
-				vehiculoEntity, 
-				bitacoraIngresoEntity.getFechaIngreso(), 
+				VehiculoBuilder.convertirAEntity(vehiculo), 
+				bitacoraIngreso.getFechaIngreso(), 
 				fechaSalida, 
 				valorTotal);	
-		
+		 
 		return new RespuestaPeticion(bitacoraSalidaRepo.save(bitacoraSalidaEntity).getId().toString(), ParametrosParqueadero.SALIDA_REGISTRADA_EXITOSAMENTE);
 	}	
 	
