@@ -1,9 +1,10 @@
 package parqueadero.servicios;
 
-import java.util.List;
+import org.springframework.stereotype.Service;
 
 import parqueadero.dominio.RespuestaConsulta;
 import parqueadero.exception.ParqueaderoException;
+
 
 public interface ConsultaServicios {
 	
