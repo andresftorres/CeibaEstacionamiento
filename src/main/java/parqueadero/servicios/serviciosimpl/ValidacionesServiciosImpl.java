@@ -41,8 +41,8 @@ public class ValidacionesServiciosImpl implements ValidacionesServicios{
 		try {
 			configuracionVehiculo = FactoryRestriccionesTarifas.obtenerDatosConfiguracion(tipoVehiculo);
 			return motocicletasEnParqueadero < configuracionVehiculo.capacidadMaxima();			
-		} catch (ParqueaderoException e) {	
-			LOGGER.info(e.getMessage());
+		} catch (Exception e) {	
+			LOGGER.info("ParqueaderoException",e);
 			return false;
 		}	  
 	}
