@@ -2,7 +2,7 @@ package parqueadero.entidad;
 
 public enum TipoVehiculo {
 
-	MOTOCICLETA("M", "Motocicleta"), AUTOMOVIL("A", "Automovil");
+	MOTOCICLETA("M", "Motocicleta"), AUTOMOVIL("A", "Automovil"), MOTO_ELECTRICA("ME", "Moto electrica"), BICICLETA("B", "Bicicleta");
 
 	private final String codigo;
 	private final String descripcion;

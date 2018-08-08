@@ -12,9 +12,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import parqueadero.servicios.IngresoVehiculoServicio;
-import parqueadero.dominio.Automovil;
-import parqueadero.dominio.Motocicleta;
 import parqueadero.dominio.ParametrosParqueadero;
+import parqueadero.dominio.Vehiculo;
 import parqueadero.entidad.TipoVehiculo;
 import parqueadero.repository.BitacoraIngresoRepository;
 
@@ -22,10 +21,11 @@ public class ValidacionesIngresoTest {
 
 	private static final String PLACANOAUTORIADA = "ABC-123";
 	private static final String PLACAAUTORIZADA = "BCD-123";
-	private static final String TIPOVEHICULO = TipoVehiculo.AUTOMOVIL.getCodigo();
-	private static final String TIPOVEHICULOBICICLETA = "B";
+	private static final TipoVehiculo TIPOVEHICULO = TipoVehiculo.AUTOMOVIL;
+	private static final TipoVehiculo TIPOVEHICULOBICICLETA = TipoVehiculo.MOTO_ELECTRICA;
 	private static final double CILINDRAJE = 600;
 	private static final String FECHA_SOLICITUD = "2017-05-26";
+	private static final double SIN_CILINDRAJE = Double.NaN;
 
 	@Autowired
 	@Qualifier("ingresovehiculosservicios")
@@ -39,7 +39,7 @@ public class ValidacionesIngresoTest {
 	public void registrarIngresoAutomovil_PlacaNoAutorizada() {
 
 		// arrange
-		Automovil automovil = new Automovil(PLACANOAUTORIADA, TIPOVEHICULO);
+		Vehiculo automovil = new Vehiculo(PLACANOAUTORIADA, TIPOVEHICULO, SIN_CILINDRAJE);
 		
 		SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
 		Calendar cal = Calendar.getInstance();	
@@ -52,7 +52,7 @@ public class ValidacionesIngresoTest {
 		
 		// act
 		try {
-			ingresoService.registrarIngresoAutomovil(automovil, cal);
+			ingresoService.registrarIngresoVehiculo(automovil, cal);
 			fail();
 
 		} catch (Throwable ex) {
@@ -66,7 +66,7 @@ public class ValidacionesIngresoTest {
 	public void registrarIngresoMotocicleta_PlacaNoAutorizada() {
 
 		// arrange
-		Motocicleta motocicleta = new Motocicleta(PLACANOAUTORIADA, TIPOVEHICULO, CILINDRAJE);
+		Vehiculo motocicleta = new Vehiculo(PLACANOAUTORIADA, TIPOVEHICULO, CILINDRAJE);
 
 		DateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
 		Calendar cal = Calendar.getInstance();
@@ -79,7 +79,7 @@ public class ValidacionesIngresoTest {
 				
 		// act
 		try {
-			ingresoService.registrarIngresoMotocicleta(motocicleta, cal);
+			ingresoService.registrarIngresoVehiculo(motocicleta, cal);
 			fail();
 
 		} catch (Throwable ex) {
@@ -93,7 +93,7 @@ public class ValidacionesIngresoTest {
 	public void registrarIngresoAutomovil_TipoVehiculoDiferente() {
 
 		// arrange
-		Automovil automovil = new Automovil(PLACAAUTORIZADA, TIPOVEHICULOBICICLETA);
+		Vehiculo automovil = new Vehiculo(PLACAAUTORIZADA, TIPOVEHICULOBICICLETA, SIN_CILINDRAJE);
 
 		DateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
 		Calendar cal = Calendar.getInstance();
@@ -106,12 +106,12 @@ public class ValidacionesIngresoTest {
 		
 		// act
 		try {
-			ingresoService.registrarIngresoAutomovil(automovil, cal);
+			ingresoService.registrarIngresoVehiculo(automovil, cal);
 			fail();
 
 		} catch (Throwable ex) {
 			// assert
-			Assert.assertNotEquals(ParametrosParqueadero.TIPO_DE_VEHICULO_NO_AUTORIADO, ex.getMessage());
+			Assert.assertNotEquals(ParametrosParqueadero.TIPO_DE_VEHICULO_NO_AUTORIZADO, ex.getMessage());
 		}
 
 	}
@@ -120,7 +120,7 @@ public class ValidacionesIngresoTest {
 	public void registrarIngresoAutomovil_CupoNoDisponible() {
 
 		// arrange
-		Automovil automovil = new Automovil(PLACAAUTORIZADA, TIPOVEHICULOBICICLETA);
+		Vehiculo automovil = new Vehiculo(PLACAAUTORIZADA, TIPOVEHICULOBICICLETA, SIN_CILINDRAJE);
 
 		DateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
 		Calendar cal = Calendar.getInstance();
@@ -133,12 +133,12 @@ public class ValidacionesIngresoTest {
 		
 		// act
 		try {
-			ingresoService.registrarIngresoAutomovil(automovil, cal);
+			ingresoService.registrarIngresoVehiculo(automovil, cal);
 			fail();
 
 		} catch (Throwable ex) {
 			// assert
-			Assert.assertNotEquals(ParametrosParqueadero.SIN_CUPO_PARA_AUTOMOVIL, ex.getMessage());
+			Assert.assertNotEquals(ParametrosParqueadero.SIN_CUPO_PARA_VEHICULO, ex.getMessage());
 		}
 
 	}
@@ -147,7 +147,7 @@ public class ValidacionesIngresoTest {
 	public void registrarMotocicleta_CupoNoDisponible() {
 
 		// arrange
-		Motocicleta motocicleta = new Motocicleta(PLACAAUTORIZADA, TIPOVEHICULOBICICLETA, CILINDRAJE);
+		Vehiculo motocicleta = new Vehiculo(PLACAAUTORIZADA, TIPOVEHICULOBICICLETA, CILINDRAJE);
 
 		DateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
 		Calendar cal = Calendar.getInstance();
@@ -160,12 +160,12 @@ public class ValidacionesIngresoTest {
 		
 		// act
 		try {
-			ingresoService.registrarIngresoMotocicleta(motocicleta, cal);
+			ingresoService.registrarIngresoVehiculo(motocicleta, cal);
 			fail();
 
 		} catch (Throwable ex) {
 			// assert
-			Assert.assertNotEquals(ParametrosParqueadero.SIN_CUPO_PARA_MOTOCICLETA, ex.getMessage());
+			Assert.assertNotEquals(ParametrosParqueadero.SIN_CUPO_PARA_VEHICULO, ex.getMessage());
 		}
 	}
 	/*

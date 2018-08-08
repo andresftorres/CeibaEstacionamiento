@@ -3,7 +3,7 @@ package parqueadero.integracion;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import parqueadero.repository.AutomovilRepository;
-import parqueadero.repository.MotocicletaRepository;
+import parqueadero.repository.VehiculoRepository;
 
 public class SalidaVehiculos {	
 	
@@ -11,7 +11,7 @@ public class SalidaVehiculos {
 	AutomovilRepository automovilRepo;
 	
 	@Autowired
-	MotocicletaRepository motocicletaRepo;
+	VehiculoRepository motocicletaRepo;
 	
 	
 	

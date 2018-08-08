@@ -7,6 +7,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity(name = "bitacoraingreso")
 public class BitacoraIngresoEntity {
@@ -16,8 +23,12 @@ public class BitacoraIngresoEntity {
 	@Column(name = "ID_BITACORA_INGRESO", nullable = false)
 	private Long id;
 
-	@Column(name = "ID_VEHICULO", nullable = false)
-	private Long idVehiculo;
+	@ManyToOne
+	@JoinColumn(name = "ID_VEHICULO", nullable = false)
+	@JsonProperty("idVehiculo")
+	@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
+	@JsonIdentityReference(alwaysAsId=true)	
+	private VehiculoEntity vehiculo;
 
 	@Column(name = "FECHA_INGRESO", nullable = false)
 	private Calendar fechaIngreso;
@@ -28,10 +39,10 @@ public class BitacoraIngresoEntity {
 	public BitacoraIngresoEntity(){
 		
 	}
-	
-	public BitacoraIngresoEntity(Long idVehiculo, Calendar fechaIngreso, boolean enPaqueadero) {
+
+	public BitacoraIngresoEntity(VehiculoEntity vehiculo, Calendar fechaIngreso, boolean enPaqueadero) {
 		super();
-		this.idVehiculo = idVehiculo;
+		this.vehiculo = vehiculo;
 		this.fechaIngreso = fechaIngreso;
 		this.enPaqueadero = enPaqueadero;
 	}
@@ -44,12 +55,12 @@ public class BitacoraIngresoEntity {
 		this.id = id;
 	}
 
-	public Long getIdVehiculo() {
-		return idVehiculo;
+	public VehiculoEntity getVehiculo() {
+		return vehiculo;
 	}
 
-	public void setIdVehiculo(Long idVehiculo) {
-		this.idVehiculo = idVehiculo;
+	public void setVehiculo(VehiculoEntity vehiculo) {
+		this.vehiculo = vehiculo;
 	}
 
 	public Calendar getFechaIngreso() {
@@ -67,5 +78,5 @@ public class BitacoraIngresoEntity {
 	public void setEnPaqueadero(boolean enPaqueadero) {
 		this.enPaqueadero = enPaqueadero;
 	}
-
+	
 }

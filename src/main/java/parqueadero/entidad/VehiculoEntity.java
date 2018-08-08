@@ -3,13 +3,14 @@ package parqueadero.entidad;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity(name = "Motocicleta")
-public class MotocicletaEntity {
+@Entity(name = "Vehiculo")
+public class VehiculoEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,14 +20,15 @@ public class MotocicletaEntity {
 	@Basic
 	private String placa;
 
+	
 	@Column(name = "TIPOVEHICULO", nullable = false)
-	private String tipoVehiculo;
+	@Enumerated(EnumType.STRING)
+	private TipoVehiculo tipoVehiculo;
 
 	@Column(name = "CILINDRAJE", nullable = false)
 	private double cilindraje;
 
-	public MotocicletaEntity( String placa, String tipoVehiculo, double cilindraje) {
-		super();
+	public VehiculoEntity(String placa,TipoVehiculo tipoVehiculo, double cilindraje) {
 		this.placa = placa;
 		this.tipoVehiculo = tipoVehiculo;
 		this.cilindraje = cilindraje;
@@ -48,11 +50,11 @@ public class MotocicletaEntity {
 		this.placa = placa;
 	}
 
-	public String getTipoVehiculo() {
+	public TipoVehiculo getTipoVehiculo() {
 		return tipoVehiculo;
 	}
 
-	public void setTipoVehiculo(String tipoVehiculo) {
+	public void setTipoVehiculo(TipoVehiculo tipoVehiculo) {
 		this.tipoVehiculo = tipoVehiculo;
 	}
 
@@ -64,4 +66,5 @@ public class MotocicletaEntity {
 		this.cilindraje = cilindraje;
 	}
 
+	
 }

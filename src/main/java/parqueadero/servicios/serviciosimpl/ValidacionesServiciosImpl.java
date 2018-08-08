@@ -3,54 +3,50 @@ package parqueadero.servicios.serviciosimpl;
 
 import java.util.Calendar;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import parqueadero.dominio.ParametrosParqueadero;
-import parqueadero.entidad.TarifaParqueaderoEntity;
 import parqueadero.entidad.TipoVehiculo;
+import parqueadero.exception.ParqueaderoException;
+import parqueadero.factorypattern.ConstantesTipoVehiculo;
+import parqueadero.factorypattern.FactoryRestriccionesTarifas;
 import parqueadero.repository.BitacoraIngresoRepository;
-import parqueadero.repository.TarifaRepository;
 import parqueadero.servicios.ValidacionesServicios;
 
 @Service
 public class ValidacionesServiciosImpl implements ValidacionesServicios{
 
-	@Autowired
-	BitacoraIngresoRepository bitacoraIngresoRepo;
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(ValidacionesServiciosImpl.class);	
 	
 	@Autowired
-	TarifaRepository tarifaRepo;
+	BitacoraIngresoRepository bitacoraIngresoRepo;	
 	
 	
 	@Override
-	public boolean validarTipoDeVehiculo(String tipoVehiculo) {		
+	public boolean validarTipoDeVehiculo(TipoVehiculo tipoVehiculo) {		
 		
-		return ParametrosParqueadero.TIPOS_DE_VEHICULOS_PERMITIDOS.contains(tipoVehiculo);
+		return ParametrosParqueadero.TIPOS_DE_VEHICULOS_PERMITIDOS.contains(tipoVehiculo.getCodigo());
 	}
 
 	@Override
-	public boolean disponibilidadMotocicleta() {
-		String tipoMotocicleta = TipoVehiculo.MOTOCICLETA.getCodigo();
+	public boolean disponibilidadVehiculo(TipoVehiculo tipoVehiculo) {
+		String tipoVehiculoABuscar = tipoVehiculo.getDescripcion();
 		
-		Long motocicletasEnParqueadero = bitacoraIngresoRepo.cantidadMotocicletasEnParqueadero();
+		Long motocicletasEnParqueadero = bitacoraIngresoRepo.cantidadVehiculosporTipo(tipoVehiculoABuscar);
 		
-		TarifaParqueaderoEntity tarifaMotociletas = tarifaRepo.obtenerTarifaPorTipo(tipoMotocicleta);
-		
-		return motocicletasEnParqueadero < tarifaMotociletas.getCapacidadMaxima();  
+		ConstantesTipoVehiculo configuracionVehiculo;
+		try {
+			configuracionVehiculo = FactoryRestriccionesTarifas.obtenerDatosConfiguracion(tipoVehiculo);
+			return motocicletasEnParqueadero < configuracionVehiculo.capacidadMaxima();			
+		} catch (ParqueaderoException e) {	
+			LOGGER.info(e.getMessage());
+			return false;
+		}	  
 	}
-
-	@Override
-	public boolean disponibilidadAutomovil() {
-		String tipoAutomovil = TipoVehiculo.AUTOMOVIL.getCodigo();
-		
-		Long automovilesEnParqueadero = bitacoraIngresoRepo.cantidadAutomovilesEnParqueadero();
-		
-		TarifaParqueaderoEntity tarifaAutomoviles = tarifaRepo.obtenerTarifaPorTipo(tipoAutomovil);
-		
-		return automovilesEnParqueadero < tarifaAutomoviles.getCapacidadMaxima(); 
-	}
-
+	
 	@Override
 	public boolean autorizaPlacaDiaActual(String placaVehiculo, Calendar fechaIngreso) {		
 		String letraValidar = ParametrosParqueadero.LETRA_PARA_VALIDAR_PLACAS;
@@ -69,15 +65,9 @@ public class ValidacionesServiciosImpl implements ValidacionesServicios{
 	}
 
 	@Override
-	public boolean automovilEnParqueadero(String placaVehiculo) {	
+	public boolean vehiculoEnParqueadero(String placaVehiculo) {	
 		
-		return bitacoraIngresoRepo.automovilEnParqueadero(placaVehiculo) != null; 
-	}
-	
-	@Override
-	public boolean motocicletaEnParqueadero(String placaVehiculo) {	
-		
-		return bitacoraIngresoRepo.motocicletaEnParqueadero(placaVehiculo) != null; 
+		return bitacoraIngresoRepo.vehiculoEnParqueadero(placaVehiculo) != null; 
 	}
 
 

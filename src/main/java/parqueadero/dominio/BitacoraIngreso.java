@@ -4,10 +4,10 @@ import java.util.Calendar;
 
 public class BitacoraIngreso extends Bitacora {
 
-	private boolean enPaqueadero;	
+	private boolean enPaqueadero;
 
-	public BitacoraIngreso( Long idVehiculo, Calendar fechaIngreso, boolean enPaqueadero) {
-		super(idVehiculo, fechaIngreso);
+	public BitacoraIngreso(Vehiculo vehiculo, Calendar fechaIngreso, boolean enPaqueadero) {
+		super(vehiculo, fechaIngreso);
 		this.enPaqueadero = enPaqueadero;
 	}
 
@@ -17,8 +17,7 @@ public class BitacoraIngreso extends Bitacora {
 
 	public void setEnPaqueadero(boolean enPaqueadero) {
 		this.enPaqueadero = enPaqueadero;
-	}
+	}	
 
 	
-
-}
+	}

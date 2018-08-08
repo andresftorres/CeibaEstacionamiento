@@ -1,16 +1,16 @@
 package parqueadero.testDataBuilder;
 
 
-import parqueadero.dominio.Automovil;
+import parqueadero.dominio.Vehiculo;
 import parqueadero.entidad.TipoVehiculo;
 
 public class AutomovilTestDataBuilder {
 
 	private static final String PLACA = "ABC123";
-	private static final String TIPOVEHICULO = TipoVehiculo.AUTOMOVIL.getCodigo();
+	private static final TipoVehiculo TIPOVEHICULO = TipoVehiculo.AUTOMOVIL;
 
 	private String placa;
-	private String tipoVehiculo;
+	private TipoVehiculo tipoVehiculo;
 	
 	public AutomovilTestDataBuilder() {
 		super();
@@ -24,13 +24,13 @@ public class AutomovilTestDataBuilder {
 		return this;
 	}
 	
-	public AutomovilTestDataBuilder conTipoVehiculo(String tipoVehiculo) {
+	public AutomovilTestDataBuilder conTipoVehiculo(TipoVehiculo tipoVehiculo) {
 		this.tipoVehiculo = tipoVehiculo;
 		return this;
 	}
 	
-	public Automovil build() {
-		return new Automovil(this.placa, this.tipoVehiculo);
+	public Vehiculo build() {
+		return new Vehiculo(this.placa, this.tipoVehiculo, Double.NaN);
 	}
 }
 	

@@ -4,15 +4,13 @@ import parqueadero.exception.ParqueaderoException;
 
 import java.util.Calendar;
 
-import parqueadero.dominio.Automovil;
-import parqueadero.dominio.Motocicleta;
+import parqueadero.dominio.RespuestaPeticion;
+import parqueadero.dominio.Vehiculo;
 import parqueadero.entidad.BitacoraIngresoEntity;
 
 public interface IngresoVehiculoServicio {
-
-	public BitacoraIngresoEntity registrarIngresoAutomovil(Automovil automovil, Calendar fechaIngreso) throws ParqueaderoException;
 	
-	public BitacoraIngresoEntity registrarIngresoMotocicleta(Motocicleta motocicleta, Calendar fechaIngreso) throws ParqueaderoException;
+	public RespuestaPeticion registrarIngresoVehiculo(Vehiculo vehiculo, Calendar fechaIngreso) throws ParqueaderoException;
 	
 	public BitacoraIngresoEntity consultaIngresoActivo(String placa);
 }

@@ -3,28 +3,20 @@ package parqueadero.dominio;
 import java.util.Calendar;
 
 public class Bitacora {
-
-	private Long id;
-	private Long idVehiculo;
+	
+	private Vehiculo vehiculo;
 	private Calendar fechaIngreso;
 	
-	public Bitacora(Long idVehiculo, Calendar fechaIngreso) {
+	public Bitacora(Vehiculo vehiculo, Calendar fechaIngreso) {
 		super();
-		this.idVehiculo = idVehiculo;
+		this.vehiculo = vehiculo;
 		this.fechaIngreso = fechaIngreso;
 	}
-	
-	public Long getId() {
-		return id;
+	public Vehiculo getVehiculo() {
+		return vehiculo;
 	}
-	public void setId(Long id) {
-		this.id = id;
-	}
-	public Long getIdVehiculo() {
-		return idVehiculo;
-	}
-	public void setIdVehiculo(Long idVehiculo) {
-		this.idVehiculo = idVehiculo;
+	public void setVehiculo(Vehiculo vehiculo) {
+		this.vehiculo = vehiculo;
 	}
 	public Calendar getFechaIngreso() {
 		return fechaIngreso;
@@ -32,6 +24,5 @@ public class Bitacora {
 	public void setFechaIngreso(Calendar fechaIngreso) {
 		this.fechaIngreso = fechaIngreso;
 	}
-
-	 
+		 
 }

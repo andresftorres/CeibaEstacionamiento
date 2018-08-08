@@ -7,6 +7,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 
 @Entity(name = "BitacoraSalida")
 public class BitacoraSalidaEntity {
@@ -16,8 +24,13 @@ public class BitacoraSalidaEntity {
 	@Column(name = "ID_BITACORA_SALIDA", nullable = false)
 	private Long id;
 
-	@Column(name = "ID_VEHICULO", nullable = false)
-	private Long idVehiculo;
+	
+	@ManyToOne
+	@JoinColumn(name = "ID_VEHICULO", nullable = false)
+	@JsonProperty("idVehiculo")
+	@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
+	@JsonIdentityReference(alwaysAsId=true)	
+	private VehiculoEntity vehiculo;
 
 	@Column(name = "FECHA_INGRESO", nullable = false)
 	private Calendar fechaIngreso;
@@ -29,12 +42,12 @@ public class BitacoraSalidaEntity {
 	private double valorTotal;
 
 	public BitacoraSalidaEntity(){
-	}
-	
-	public BitacoraSalidaEntity(Long idVehiculo, Calendar fechaIngreso, Calendar fechaSalida,
+	}	
+
+	public BitacoraSalidaEntity(VehiculoEntity vehiculo, Calendar fechaIngreso, Calendar fechaSalida,
 			double valorTotal) {
 		super();
-		this.idVehiculo = idVehiculo;
+		this.vehiculo = vehiculo;
 		this.fechaIngreso = fechaIngreso;
 		this.fechaSalida = fechaSalida;
 		this.valorTotal = valorTotal;
@@ -48,12 +61,12 @@ public class BitacoraSalidaEntity {
 		this.id = id;
 	}
 
-	public Long getIdVehiculo() {
-		return idVehiculo;
+	public VehiculoEntity getVehiculo() {
+		return vehiculo;
 	}
 
-	public void setIdVehiculo(Long idVehiculo) {
-		this.idVehiculo = idVehiculo;
+	public void setVehiculo(VehiculoEntity vehiculo) {
+		this.vehiculo = vehiculo;
 	}
 
 	public Calendar getFechaIngreso() {
@@ -80,4 +93,5 @@ public class BitacoraSalidaEntity {
 		this.valorTotal = valorTotal;
 	}
 
+	
 }

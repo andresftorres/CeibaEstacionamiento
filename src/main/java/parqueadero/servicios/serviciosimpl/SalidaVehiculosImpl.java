@@ -4,21 +4,19 @@ package parqueadero.servicios.serviciosimpl;
 import java.util.Calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import parqueadero.dominio.ParametrosParqueadero;
-import parqueadero.entidad.AutomovilEntity;
+import parqueadero.dominio.RespuestaPeticion;
 import parqueadero.entidad.BitacoraIngresoEntity;
 import parqueadero.entidad.BitacoraSalidaEntity;
-import parqueadero.entidad.MotocicletaEntity;
-import parqueadero.entidad.TarifaParqueaderoEntity;
+import parqueadero.entidad.VehiculoEntity;
 import parqueadero.exception.ParqueaderoException;
-import parqueadero.repository.AutomovilRepository;
+import parqueadero.factorypattern.ConstantesTipoVehiculo;
+import parqueadero.factorypattern.FactoryRestriccionesTarifas;
 import parqueadero.repository.BitacoraIngresoRepository;
 import parqueadero.repository.BitacoraSalidaRepository;
-import parqueadero.repository.MotocicletaRepository;
-import parqueadero.repository.TarifaRepository;
+import parqueadero.repository.VehiculoRepository;
 import parqueadero.servicios.IngresoVehiculoServicio;
 import parqueadero.servicios.SalidaVehiculoServicio;
 import parqueadero.servicios.ValidacionesServicios;
@@ -28,6 +26,7 @@ public class SalidaVehiculosImpl implements SalidaVehiculoServicio {
 
 	public static final double HORA_EN_MILISEGUNDOS = (1000 * 60 * 60);
 	public static final double NO_USA_CILINDRAJE = 0;
+	public static final Long IDLONG = 1L;
 	public static final boolean NO_ESTA_EN_PARQUEADERO = false;
 	
 	@Autowired
@@ -37,117 +36,59 @@ public class SalidaVehiculosImpl implements SalidaVehiculoServicio {
 	BitacoraIngresoRepository bitacoraIngresoRepo;
 	
 	@Autowired
-	MotocicletaRepository mototcicletaRepo;
-	
-	@Autowired
-	AutomovilRepository automovilRepo;
-	
-	@Autowired
-	TarifaRepository tarifaRepo;
-	
+	VehiculoRepository vehiculoRepo;
+		
 	@Autowired
 	ValidacionesServicios validacionesServicios;
 	
 	@Autowired
 	IngresoVehiculoServicio ingresoVehiculoServicio;
-	
-
+		
 	@Override
-	public BitacoraSalidaEntity registrarSalidaDeAutomovil(String placa) throws ParqueaderoException {
+	public RespuestaPeticion registrarSalidaDeVehiculo(String placa) throws ParqueaderoException {
 		
-		AutomovilEntity automovilEntity = automovilRepo.findByPlaca(placa);
+		VehiculoEntity vehiculoEntity = vehiculoRepo.findByPlaca(placa);		
 		
-		if( !validacionesServicios.autorizaPlacaDiaActual(automovilEntity.getPlaca(), Calendar.getInstance())) {
-			throw new ParqueaderoException(ParametrosParqueadero.VEHICULO_NO_AUTORIZADO);
-		}
-		
-		if( ! validacionesServicios.validarTipoDeVehiculo(automovilEntity.getTipoVehiculo()) ) {
-			throw new ParqueaderoException(ParametrosParqueadero.TIPO_DE_VEHICULO_NO_AUTORIADO);
-		}
-		
-		if( !validacionesServicios.automovilEnParqueadero(automovilEntity.getPlaca()) )  {
-			throw new ParqueaderoException(ParametrosParqueadero.EL_VEHICULO_NO_ESTA_EN_EL_PARQUEADERO);
-		}	
-		
-		BitacoraIngresoEntity bitacoraIngresoEntity = ingresoVehiculoServicio.consultaIngresoActivo(automovilEntity.getPlaca());	
-		
-		bitacoraIngresoRepo.save(bitacoraIngresoEntity);
-		
-		Calendar fechaSalida = Calendar.getInstance();		
-		TarifaParqueaderoEntity tarifaParqueaderoEntity = tarifaRepo.obtenerTarifaPorTipo(automovilEntity.getTipoVehiculo());
-		
-		double valorTotal = calcularValorAPagar( 
-				bitacoraIngresoEntity, 
-				fechaSalida, 
-				tarifaParqueaderoEntity,
-				NO_USA_CILINDRAJE
-		);		
-		
-		BitacoraSalidaEntity bitacoraSalidaEntity = new BitacoraSalidaEntity(
-				automovilEntity.getId(), 
-				bitacoraIngresoEntity.getFechaIngreso(), 
-				fechaSalida, 
-				valorTotal);
-		
-		bitacoraSalidaRepo.save(bitacoraSalidaEntity);
-		
-		return bitacoraSalidaEntity;
-	}
-
-	@Override
-	public BitacoraSalidaEntity registrarSalidaDeMotocicleta(String placa) throws ParqueaderoException {
-		
-		MotocicletaEntity motocicletaEntity = mototcicletaRepo.findByPlaca(placa);
-		
-		if( !validacionesServicios.autorizaPlacaDiaActual(motocicletaEntity.getPlaca(), Calendar.getInstance())) {
-			throw new ParqueaderoException(ParametrosParqueadero.VEHICULO_NO_AUTORIZADO);
-		}
-		
-		if( ! validacionesServicios.validarTipoDeVehiculo(motocicletaEntity.getTipoVehiculo()) ) {
-			throw new ParqueaderoException(ParametrosParqueadero.TIPO_DE_VEHICULO_NO_AUTORIADO);
-		}
-		
-		if( !validacionesServicios.motocicletaEnParqueadero(motocicletaEntity.getPlaca()) )  {
+		if( !validacionesServicios.vehiculoEnParqueadero(vehiculoEntity.getPlaca()) )  {
 			throw new ParqueaderoException(ParametrosParqueadero.EL_VEHICULO_NO_ESTA_EN_EL_PARQUEADERO);
 		}					
 		
-		BitacoraIngresoEntity bitacoraIngresoEntity = ingresoVehiculoServicio.consultaIngresoActivo(motocicletaEntity.getPlaca());	
+		BitacoraIngresoEntity bitacoraIngresoEntity = ingresoVehiculoServicio.consultaIngresoActivo(vehiculoEntity.getPlaca());	
 		bitacoraIngresoEntity.setEnPaqueadero(NO_ESTA_EN_PARQUEADERO);
 		
 		bitacoraIngresoRepo.save(bitacoraIngresoEntity);
 		
 		Calendar fechaSalida = Calendar.getInstance();		
-		TarifaParqueaderoEntity tarifaParqueaderoEntity = tarifaRepo.obtenerTarifaPorTipo(motocicletaEntity.getTipoVehiculo());
 		
+	    ConstantesTipoVehiculo configuracionVehiculo = FactoryRestriccionesTarifas.obtenerDatosConfiguracion( vehiculoEntity.getTipoVehiculo());    
+		    
 		double valorTotal = calcularValorAPagar( 
 				bitacoraIngresoEntity, 
 				fechaSalida, 
-				tarifaParqueaderoEntity,
-				motocicletaEntity.getCilindraje()
+				configuracionVehiculo,
+				vehiculoEntity.getCilindraje()
 		);		
 		
 		BitacoraSalidaEntity bitacoraSalidaEntity = new BitacoraSalidaEntity(
-				motocicletaEntity.getId(), 
+				vehiculoEntity, 
 				bitacoraIngresoEntity.getFechaIngreso(), 
 				fechaSalida, 
-				valorTotal);
+				valorTotal);	
 		
-		bitacoraSalidaRepo.save(bitacoraSalidaEntity);
-		
-		return bitacoraSalidaEntity;
+		return new RespuestaPeticion(bitacoraSalidaRepo.save(bitacoraSalidaEntity).getId().toString(), ParametrosParqueadero.SALIDA_REGISTRADA_EXITOSAMENTE);
 	}	
 	
-	private double calcularValorAPagar(BitacoraIngresoEntity bitacoraIngresoEntity, Calendar fechaSalida, TarifaParqueaderoEntity tarifaParqueaderoEntity, double cilindraje){
+	private double calcularValorAPagar(BitacoraIngresoEntity bitacoraIngresoEntity, Calendar fechaSalida, ConstantesTipoVehiculo constantesVehiculo, double cilindraje){
 		
 		double valor;
 		double totalHorasEnParqueadero;
 		
 		totalHorasEnParqueadero = horasEnParqueadero(bitacoraIngresoEntity.getFechaIngreso(), fechaSalida );		
 		
-		valor = valorXCobrar(totalHorasEnParqueadero, tarifaParqueaderoEntity.getValorHora(), tarifaParqueaderoEntity.getValorDia());
+		valor = valorXCobrar(totalHorasEnParqueadero, constantesVehiculo.obtenerValorHora(), constantesVehiculo.obtenerValorDia());
 		
-		if ( tarifaParqueaderoEntity.isUsaCilindraje() && cilindraje > tarifaParqueaderoEntity.getCilindrajeMaximo()) {
-			valor = valor + tarifaParqueaderoEntity.getAdicionalCilindraje();
+		if ( constantesVehiculo.cilidrageMaximo() > 0 && cilindraje > constantesVehiculo.cilidrageMaximo()) {
+			valor = valor + constantesVehiculo.cobroPorCilindraje();
 		}		
 		return valor;
 		

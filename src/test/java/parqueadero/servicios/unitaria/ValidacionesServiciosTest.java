@@ -2,58 +2,49 @@ package parqueadero.servicios.unitaria;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.Mock;
 import org.springframework.test.util.ReflectionTestUtils;
-
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-
-import parqueadero.builder.AutomovilBuilder;
-import parqueadero.builder.TarifaParqueaderoBuilder;
-import parqueadero.dominio.Automovil;
-import parqueadero.dominio.TarifaParqueadero;
+import parqueadero.builder.VehiculoBuilder;
+import parqueadero.dominio.Vehiculo;
 import parqueadero.repository.BitacoraIngresoRepository;
-import parqueadero.repository.MotocicletaRepository;
-import parqueadero.repository.TarifaRepository;
-import parqueadero.entidad.AutomovilEntity;
-import parqueadero.entidad.TarifaParqueaderoEntity;
+import parqueadero.repository.VehiculoRepository;
 import parqueadero.entidad.TipoVehiculo;
+import parqueadero.entidad.VehiculoEntity;
 import parqueadero.servicios.serviciosimpl.ValidacionesServiciosImpl;
-import parqueadero.testDataBuilder.AutomovilTestDataBuilder;
-import parqueadero.testDataBuilder.TarifaParqTestDataBuilder;
+import parqueadero.testDataBuilder.VehiculoTestDataBuilder;
 
 public class ValidacionesServiciosTest {
 
 	public static final String PLACA_NO_AUTORIZADA = "ABC-123";
 	public static final String PLACA_AUTORIZADA = "DFE-123";
-	public static final String TIPO_VEHICULO_BICICLETA = "B";
-	public static final String TIPO_VEHICULO_MOTOCICLETA = TipoVehiculo.MOTOCICLETA.getCodigo();
-	public static final String TIPO_VEHICULO_AUTOMOVIL = TipoVehiculo.AUTOMOVIL.getCodigo();
+	public static final TipoVehiculo TIPO_VEHICULO_BICICLETA = TipoVehiculo.BICICLETA;
+	public static final TipoVehiculo TIPO_VEHICULO_MOTOCICLETA = TipoVehiculo.MOTOCICLETA;
+	public static final TipoVehiculo TIPO_VEHICULO_AUTOMOVIL = TipoVehiculo.AUTOMOVIL;
 	public static final int CANTIDAD_DIEZ = 10;
-	public static final int CANTIDAD_NUEVE = 9;
+	public static final int CANTIDAD_UNO = 1;
+	public static final int CANTIDAD_VEINTE = 20;
 	public static final double ALTO_CILINDRAJE = 600;
 	public static final Long ID_VEHICULO = 1L;
 	private static final String FECHA_PERMITIDA = "2018-08-3";
+	private static final double SIN_CILINDRAJE = Double.NaN;
 
-	@Autowired
+	@Mock
 	BitacoraIngresoRepository bitacoraIngresoRepo;
 
-	@Autowired
-	MotocicletaRepository mototcicletaRepo;
-
-	@Autowired
-	TarifaRepository tarifaRepo;
+	@Mock
+	VehiculoRepository vehiculoRepo;	
 
 	@Test
 	public void validarTipoDeVehiculo_TipoVehiculoNoSoportado() {
 
 		// Arrange
 		ValidacionesServiciosImpl validaciones = new ValidacionesServiciosImpl();
-		Automovil automovil = new Automovil(PLACA_NO_AUTORIZADA, TIPO_VEHICULO_BICICLETA);
+		Vehiculo automovil = new Vehiculo(PLACA_NO_AUTORIZADA, TIPO_VEHICULO_BICICLETA, SIN_CILINDRAJE);
 
 		// Act
 		boolean tipoAutorizado = validaciones.validarTipoDeVehiculo(automovil.getTipoVehiculo());
@@ -68,23 +59,14 @@ public class ValidacionesServiciosTest {
 
 		// Arrange
 		ValidacionesServiciosImpl validaciones = new ValidacionesServiciosImpl();
-
-		bitacoraIngresoRepo = mock(BitacoraIngresoRepository.class);
-		when(bitacoraIngresoRepo.cantidadMotocicletasEnParqueadero()).thenReturn((long) CANTIDAD_DIEZ);
-
-		TarifaParqueadero tarifaParqueadero = new TarifaParqTestDataBuilder().conTipoVehiculo(TIPO_VEHICULO_MOTOCICLETA)
-				.conCapacidadMaxima(CANTIDAD_DIEZ).build();
-
-		TarifaParqueaderoEntity tarifaParqueaderoEntity = TarifaParqueaderoBuilder.convertirAEntity(tarifaParqueadero);
-
-		tarifaRepo = mock(TarifaRepository.class);
-		when(tarifaRepo.obtenerTarifaPorTipo(TIPO_VEHICULO_MOTOCICLETA)).thenReturn(tarifaParqueaderoEntity);
-
+		
+		bitacoraIngresoRepo = mock( BitacoraIngresoRepository.class);
+		when(bitacoraIngresoRepo.cantidadVehiculosporTipo(TIPO_VEHICULO_MOTOCICLETA.getDescripcion())).thenReturn((long) CANTIDAD_DIEZ);
+		
 		ReflectionTestUtils.setField(validaciones, "bitacoraIngresoRepo", bitacoraIngresoRepo);
-		ReflectionTestUtils.setField(validaciones, "tarifaRepo", tarifaRepo);
 
 		// Act
-		boolean disponibilidad = validaciones.disponibilidadMotocicleta();
+		boolean disponibilidad = validaciones.disponibilidadVehiculo(TIPO_VEHICULO_MOTOCICLETA);
 
 		// Assert
 		Assert.assertFalse(disponibilidad);
@@ -97,21 +79,13 @@ public class ValidacionesServiciosTest {
 		ValidacionesServiciosImpl validaciones = new ValidacionesServiciosImpl();
 
 		bitacoraIngresoRepo = mock(BitacoraIngresoRepository.class);
-		when(bitacoraIngresoRepo.cantidadAutomovilesEnParqueadero()).thenReturn((long) CANTIDAD_DIEZ);
-
-		TarifaParqueadero tarifaParqueadero = new TarifaParqTestDataBuilder().conTipoVehiculo(TIPO_VEHICULO_AUTOMOVIL)
-				.conCapacidadMaxima(CANTIDAD_DIEZ).build();
-
-		TarifaParqueaderoEntity tarifaParqueaderoEntity = TarifaParqueaderoBuilder.convertirAEntity(tarifaParqueadero);
-
-		tarifaRepo = mock(TarifaRepository.class);
-		when(tarifaRepo.obtenerTarifaPorTipo(TIPO_VEHICULO_AUTOMOVIL)).thenReturn(tarifaParqueaderoEntity);
+		when(bitacoraIngresoRepo.cantidadVehiculosporTipo(TIPO_VEHICULO_AUTOMOVIL.getDescripcion())).thenReturn((long) CANTIDAD_VEINTE);
+		
 
 		ReflectionTestUtils.setField(validaciones, "bitacoraIngresoRepo", bitacoraIngresoRepo);
-		ReflectionTestUtils.setField(validaciones, "tarifaRepo", tarifaRepo);
 
 		// Act
-		boolean disponibilidad = validaciones.disponibilidadAutomovil();
+		boolean disponibilidad = validaciones.disponibilidadVehiculo(TIPO_VEHICULO_AUTOMOVIL);
 
 		// Assert
 		Assert.assertFalse(disponibilidad);
@@ -122,21 +96,12 @@ public class ValidacionesServiciosTest {
 		ValidacionesServiciosImpl validaciones = new ValidacionesServiciosImpl();
 
 		bitacoraIngresoRepo = mock(BitacoraIngresoRepository.class);
-		when(bitacoraIngresoRepo.cantidadAutomovilesEnParqueadero()).thenReturn((long) CANTIDAD_NUEVE);
-
-		TarifaParqueadero tarifaParqueadero = new TarifaParqTestDataBuilder().conTipoVehiculo(TIPO_VEHICULO_AUTOMOVIL)
-				.conCapacidadMaxima(CANTIDAD_DIEZ).build();
-
-		TarifaParqueaderoEntity tarifaParqueaderoEntity = TarifaParqueaderoBuilder.convertirAEntity(tarifaParqueadero);
-
-		tarifaRepo = mock(TarifaRepository.class);
-		when(tarifaRepo.obtenerTarifaPorTipo(TIPO_VEHICULO_AUTOMOVIL)).thenReturn(tarifaParqueaderoEntity);
+		when(bitacoraIngresoRepo.cantidadVehiculosporTipo(TIPO_VEHICULO_AUTOMOVIL.getDescripcion())).thenReturn((long) CANTIDAD_UNO);
 
 		ReflectionTestUtils.setField(validaciones, "bitacoraIngresoRepo", bitacoraIngresoRepo);
-		ReflectionTestUtils.setField(validaciones, "tarifaRepo", tarifaRepo);
 
 		// Act
-		boolean disponible = validaciones.disponibilidadAutomovil();
+		boolean disponible = validaciones.disponibilidadVehiculo(TIPO_VEHICULO_AUTOMOVIL);
 
 		// Assert
 		Assert.assertTrue(disponible);
@@ -149,22 +114,13 @@ public class ValidacionesServiciosTest {
 		ValidacionesServiciosImpl validaciones = new ValidacionesServiciosImpl();
 
 		bitacoraIngresoRepo = mock(BitacoraIngresoRepository.class);
-		when(bitacoraIngresoRepo.cantidadMotocicletasEnParqueadero()).thenReturn((long) CANTIDAD_NUEVE);
-
-		TarifaParqueadero tarifaParqueadero = new TarifaParqTestDataBuilder().conTipoVehiculo(TIPO_VEHICULO_MOTOCICLETA)
-				.conCapacidadMaxima(CANTIDAD_DIEZ).build();
-
-		TarifaParqueaderoEntity tarifaParqueaderoEntity = TarifaParqueaderoBuilder.convertirAEntity(tarifaParqueadero);
-
-		tarifaRepo = mock(TarifaRepository.class);
-		when(tarifaRepo.obtenerTarifaPorTipo(TIPO_VEHICULO_MOTOCICLETA)).thenReturn(tarifaParqueaderoEntity);
-
-		ReflectionTestUtils.setField(validaciones, "bitacoraIngresoRepo", bitacoraIngresoRepo);
-		ReflectionTestUtils.setField(validaciones, "tarifaRepo", tarifaRepo);
+		when(bitacoraIngresoRepo.cantidadVehiculosporTipo(TIPO_VEHICULO_MOTOCICLETA.getDescripcion())).thenReturn((long) CANTIDAD_UNO);
 		
 
+		ReflectionTestUtils.setField(validaciones, "bitacoraIngresoRepo", bitacoraIngresoRepo);		
+
 		// Act
-		boolean disponible = validaciones.disponibilidadMotocicleta();
+		boolean disponible = validaciones.disponibilidadVehiculo(TIPO_VEHICULO_MOTOCICLETA);
 
 		// Assert
 		Assert.assertTrue(disponible);
@@ -174,7 +130,7 @@ public class ValidacionesServiciosTest {
 	public void autorizaPlacaDiaActual_PlacaNoAutorizada() {
 		// Arrange
 		ValidacionesServiciosImpl validaciones = new ValidacionesServiciosImpl();
-		Automovil automovil = new Automovil(PLACA_NO_AUTORIZADA, TIPO_VEHICULO_AUTOMOVIL);
+		Vehiculo automovil = new Vehiculo(PLACA_NO_AUTORIZADA, TIPO_VEHICULO_AUTOMOVIL, SIN_CILINDRAJE);
 
 		SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
 		Calendar cal = Calendar.getInstance();
@@ -197,17 +153,17 @@ public class ValidacionesServiciosTest {
 		// Arrange
 		ValidacionesServiciosImpl validaciones = new ValidacionesServiciosImpl();
 
-		Automovil automovil = new AutomovilTestDataBuilder().conTipoVehiculo(TIPO_VEHICULO_AUTOMOVIL)
+		Vehiculo vehiculo = new VehiculoTestDataBuilder().conTipoVehiculo(TIPO_VEHICULO_AUTOMOVIL)
 				.conPlaca(PLACA_AUTORIZADA).build();
 
-		AutomovilEntity automovilEntity = AutomovilBuilder.convertirAEntity(automovil);
+		VehiculoEntity vehiculoEntity = VehiculoBuilder.convertirAEntity(vehiculo);
 		bitacoraIngresoRepo = mock(BitacoraIngresoRepository.class);
-		when(bitacoraIngresoRepo.automovilEnParqueadero(automovilEntity.getPlaca())).thenReturn(automovilEntity);
+		when(bitacoraIngresoRepo.vehiculoEnParqueadero(vehiculoEntity.getPlaca())).thenReturn(vehiculoEntity);
 
 		ReflectionTestUtils.setField(validaciones, "bitacoraIngresoRepo", bitacoraIngresoRepo);
 		
 		// Act
-		boolean existeVehiculo = validaciones.automovilEnParqueadero(automovilEntity.getPlaca());
+		boolean existeVehiculo = validaciones.vehiculoEnParqueadero(vehiculoEntity.getPlaca());
 
 		// Assert
 		Assert.assertTrue(existeVehiculo);

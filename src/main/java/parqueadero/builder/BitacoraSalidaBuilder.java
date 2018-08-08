@@ -15,16 +15,12 @@ public final class BitacoraSalidaBuilder {
 			return null;
 		}
 		
-		BitacoraSalida bitacoraSalida = new BitacoraSalida(
-				bitacoraSalidaEntity.getIdVehiculo(), 
+		return new BitacoraSalida(
+				VehiculoBuilder.convertirADominio(bitacoraSalidaEntity.getVehiculo()), 
 				bitacoraSalidaEntity.getFechaIngreso(), 
 				bitacoraSalidaEntity.getFechaSalida(), 
 				bitacoraSalidaEntity.getValorTotal()
-		);
-		
-		bitacoraSalida.setId(bitacoraSalidaEntity.getId());
-		
-		return bitacoraSalida;		
+		);		
 	}
 	
 	public static BitacoraSalidaEntity convertirAEntity(BitacoraSalida bitacoraSalida) {
@@ -33,15 +29,11 @@ public final class BitacoraSalidaBuilder {
 			return null;
 		}
 		
-		BitacoraSalidaEntity bitacoraSalidaEntity = new BitacoraSalidaEntity(
-				bitacoraSalida.getIdVehiculo(), 
+		return new BitacoraSalidaEntity(
+				VehiculoBuilder.convertirAEntity(bitacoraSalida.getVehiculo()), 
 				bitacoraSalida.getFechaIngreso(), 
 				bitacoraSalida.getFechaSalida(), 
 				bitacoraSalida.getValorTotal()
-		);
-		
-		bitacoraSalidaEntity.setId(bitacoraSalida.getId());
-		
-		return bitacoraSalidaEntity;		
+		);		
 	}
 }

@@ -1,25 +1,21 @@
 package parqueadero.controlador;
 
 import java.util.Calendar;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import parqueadero.builder.AutomovilBuilder;
-import parqueadero.dominio.Automovil;
-import parqueadero.dominio.Motocicleta;
-import parqueadero.entidad.AutomovilEntity;
-import parqueadero.entidad.BitacoraIngresoEntity;
+
 import parqueadero.exception.ParqueaderoException;
-import parqueadero.repository.AutomovilRepository;
 import parqueadero.servicios.IngresoVehiculoServicio;
 import parqueadero.dominio.ParametrosParqueadero;
+import parqueadero.dominio.RespuestaPeticion;
+import parqueadero.dominio.Vehiculo;
 
 @RestController
 @RequestMapping( ParametrosParqueadero.API )
@@ -30,38 +26,16 @@ public class BitacoraIngresoControlador {
 	@Autowired
 	private IngresoVehiculoServicio ingresoVehiculoServicio;
 
-	@Autowired
-	private AutomovilRepository automovilRepository;	
 
-	@RequestMapping(value = ParametrosParqueadero.RUTA_INGRESO_AUTOMOVIL, method = RequestMethod.POST)
-	public BitacoraIngresoEntity registrarIngresoVehiculo(@RequestBody Automovil automovil) {		
-		
-		BitacoraIngresoEntity bitacoraIngresoEntity = new BitacoraIngresoEntity();
+	@RequestMapping(value = ParametrosParqueadero.RUTA_INGRESO, method = RequestMethod.POST)
+	public ResponseEntity<RespuestaPeticion> registrarIngresoVehiculo(@RequestBody(required = true) Vehiculo automovil) {		
 		try {
-			bitacoraIngresoEntity = ingresoVehiculoServicio.registrarIngresoAutomovil(automovil, calculaFechaIngreso() );
+			return new ResponseEntity<>(ingresoVehiculoServicio.registrarIngresoVehiculo(automovil, calculaFechaIngreso()), HttpStatus.OK );
 		} catch (ParqueaderoException e) {			
-			LOGGER.info("ParqueaderoException ", e);			
+			LOGGER.info("ParqueaderoException ", e);
+			return new ResponseEntity<>( new RespuestaPeticion( e.getDescripion(), e.getMessage() ), HttpStatus.OK);					
 		}
-		return bitacoraIngresoEntity;
-	}
-	
-	@RequestMapping(value = ParametrosParqueadero.RUTA_INGRESO_MOTOCICLETA, method = RequestMethod.POST)
-	public ResponseEntity<BitacoraIngresoEntity> registraringresoMotocicleta(@RequestBody Motocicleta motocicleta) {
-
-		BitacoraIngresoEntity bitacoraIngresoEntity  = new BitacoraIngresoEntity();
-		try {
-			bitacoraIngresoEntity = ingresoVehiculoServicio.registrarIngresoMotocicleta(motocicleta, calculaFechaIngreso());
-		} catch (ParqueaderoException e) {
-			LOGGER.info("ParqueaderoException", e);	
-		}
-
-		if (bitacoraIngresoEntity == null) {
-			return ResponseEntity.badRequest().header("Error", "10").body(bitacoraIngresoEntity);
-		} else {
-			return ResponseEntity.ok().body(bitacoraIngresoEntity);
-		}
-
-	}
+	}	
 			
 	private Calendar calculaFechaIngreso() {
 		Calendar calendar = Calendar.getInstance();

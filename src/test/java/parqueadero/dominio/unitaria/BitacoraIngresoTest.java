@@ -7,13 +7,15 @@ import java.util.Calendar;
 import org.junit.Test;
 
 import parqueadero.dominio.BitacoraIngreso;
+import parqueadero.dominio.Vehiculo;
 import parqueadero.testDataBuilder.BitacoraIngresoTestDataBuilder;
+import parqueadero.testDataBuilder.VehiculoTestDataBuilder;
 
 
 public class BitacoraIngresoTest {
 
 	private static final Long ID = 1L;
-	private static final Long IDVEHICULO = 2L;
+	private static final Vehiculo VEHICULO_TEST = new VehiculoTestDataBuilder().build();
 	private static final Calendar FECHAINGRESO = Calendar.getInstance();
 		
 	@Test
@@ -22,12 +24,12 @@ public class BitacoraIngresoTest {
 		// arrange
 
 		BitacoraIngresoTestDataBuilder bitacoraIngresoTest = new BitacoraIngresoTestDataBuilder().conId(ID)
-				.conIdVehiculo(IDVEHICULO).conFechaIngreso(FECHAINGRESO);
+				.conVehiculo(VEHICULO_TEST).conFechaIngreso(FECHAINGRESO);
 		// act
 		BitacoraIngreso bitacoraIngresoPrueba = bitacoraIngresoTest.build();
 
 		// assert		
-		assertEquals(IDVEHICULO, bitacoraIngresoPrueba.getIdVehiculo());
+		assertEquals(VEHICULO_TEST, bitacoraIngresoPrueba.getVehiculo());
 		assertEquals(FECHAINGRESO, bitacoraIngresoPrueba.getFechaIngreso());
 
 	}

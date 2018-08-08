@@ -5,10 +5,10 @@ import java.util.Calendar;
 public class BitacoraSalida extends Bitacora {
 
 	private Calendar fechaSalida;
-	private double valorTotal;
+	private double valorTotal;	
 	
-	public BitacoraSalida( Long idVehiculo, Calendar fechaIngreso, Calendar fechaSalida, double valorTotal) {
-		super(idVehiculo, fechaIngreso);
+	public BitacoraSalida(Vehiculo vehiculo, Calendar fechaIngreso, Calendar fechaSalida, double valorTotal) {
+		super(vehiculo, fechaIngreso);
 		this.fechaSalida = fechaSalida;
 		this.valorTotal = valorTotal;
 	}
@@ -24,6 +24,6 @@ public class BitacoraSalida extends Bitacora {
 	public void setValorTotal(double valorTotal) {
 		this.valorTotal = valorTotal;
 	}
-
+	
 	
 }

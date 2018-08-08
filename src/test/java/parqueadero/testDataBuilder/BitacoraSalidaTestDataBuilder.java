@@ -2,24 +2,25 @@ package parqueadero.testDataBuilder;
 
 import java.util.Calendar;
 import parqueadero.dominio.BitacoraSalida;
+import parqueadero.dominio.Vehiculo;
 
 public class BitacoraSalidaTestDataBuilder {
 
 	private static final Long ID = 1L;
-	private static final Long IDVEHICULO = 1L;
+	private static final Vehiculo VEHICULO_MOTOCICLETA = new VehiculoTestDataBuilder().build();
 	private static final Calendar FECHAINGRESO = Calendar.getInstance();
 	private static final Calendar FECHASALIDA = Calendar.getInstance();
 	private static final double VALORTOTAL = 8000;
 	
 	private Long id;
-	private Long idVehiculo;
+	private Vehiculo vehiculo;
 	private Calendar fechaIngreso;
 	private Calendar fechaSalida;
 	private double valorTotal;
 	
 	public BitacoraSalidaTestDataBuilder() {
 		super();
-		this.idVehiculo = IDVEHICULO;
+		this.vehiculo = VEHICULO_MOTOCICLETA;
 		this.fechaIngreso = FECHAINGRESO;
 		this.fechaSalida = FECHASALIDA;
 		this.valorTotal = VALORTOTAL;
@@ -34,8 +35,8 @@ public class BitacoraSalidaTestDataBuilder {
 		return fechaIngreso;
 	}
 	
-	public BitacoraSalidaTestDataBuilder conIdVehiculo(Long idVehiculo) {
-		this.idVehiculo = idVehiculo;
+	public BitacoraSalidaTestDataBuilder conVehiculo(Vehiculo vehiculo) {
+		this.vehiculo = vehiculo;
 		return this;
 	}
 	
@@ -55,7 +56,7 @@ public class BitacoraSalidaTestDataBuilder {
 	}
 	
 	public BitacoraSalida build() {
-		return new BitacoraSalida(this.idVehiculo, this.fechaIngreso, this.fechaSalida, this.valorTotal);
+		return new BitacoraSalida(this.vehiculo, this.fechaIngreso, this.fechaSalida, this.valorTotal);
 	}
 		
 }
