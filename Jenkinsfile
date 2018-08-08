@@ -30,15 +30,18 @@ disableConcurrentBuilds()
  stage('Unit Tests') {
 	steps{
 		echo "------------>Unit Tests<------------"
-		sh 'gradle --b ./build.gradle cleanTest test'
-		jacoco classPattern: '**/build/classes/java', execPattern: '**/build/jacoco/test.exec', sourcePattern: '**/src/main/java'
+		sh 'gradle test'
+        junit '**/build/jacoco/test-results/*.xml' //aggregate test results - JUnit
+        jacoco classPattern: '**/build/classes/java', execPattern: '**/build/jacoco/jacocoTest.exec', sourcePattern: '**/src/main/java'
 	}
  }
- stage('Integration Tests') {
- steps {
- echo "------------>Integration Tests<------------"
- }
- }
+  stage('Build') {
+	steps {
+		echo "------------>Build<------------"
+		//Construir sin tarea test que se ejecutó previamente
+		sh 'gradle --b ./build.gradle build -x test'
+	}
+}
  stage('Static Code Analysis') {
 		steps{
 		echo '------------>Análisis de código estático<------------'
@@ -46,13 +49,6 @@ disableConcurrentBuilds()
 		sh "${tool name: 'SonarScanner',type:'hudson.plugins.sonar.SonarRunnerInstallation'}/bin/sonar-scanner"
 }
 }
-}
- stage('Build') {
-	steps {
-		echo "------------>Build<------------"
-		//Construir sin tarea test que se ejecutó previamente
-		sh 'gradle --b ./build.gradle build -x test'
-	}
 }
  }
  post {
