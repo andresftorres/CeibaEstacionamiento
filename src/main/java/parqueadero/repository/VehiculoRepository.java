@@ -10,5 +10,5 @@ import parqueadero.entidad.VehiculoEntity;
 @Repository
 public interface VehiculoRepository extends JpaRepository<VehiculoEntity, Long> {
 
-	public Vehiculo findByPlaca(String placa);
+	public VehiculoEntity findByPlaca(String placa);
 }

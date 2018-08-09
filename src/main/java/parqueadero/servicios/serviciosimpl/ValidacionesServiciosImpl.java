@@ -28,7 +28,7 @@ public class ValidacionesServiciosImpl implements ValidacionesServicios{
 	@Override
 	public boolean validarTipoDeVehiculo(TipoVehiculo tipoVehiculo) {		
 		
-		return ParametrosParqueadero.TIPOS_DE_VEHICULOS_PERMITIDOS.contains(tipoVehiculo.getCodigo());
+		return ParametrosParqueadero.TIPOS_DE_VEHICULOS_PERMITIDOS.contains(tipoVehiculo.getDescripcion());
 	}
 
 	@Override

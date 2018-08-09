@@ -18,7 +18,7 @@ public final class ParametrosParqueadero {
 	public static final String REGISTRO_EXITOSO = "Bitacora de ingreso registrado exitosamente.";
 	public static final String SALIDA_REGISTRADA_EXITOSAMENTE = "Bitacora de salida registrado exitosamente.";
 	
-	public static final String TIPOS_DE_VEHICULOS_PERMITIDOS = TipoVehiculo.MOTOCICLETA.getCodigo()+","+TipoVehiculo.AUTOMOVIL.getCodigo();
+	public static final String TIPOS_DE_VEHICULOS_PERMITIDOS = "Motocicleta,Automovil";
 	public static final String LETRA_PARA_VALIDAR_PLACAS = "A";
 	
 	//Rutas de acceso

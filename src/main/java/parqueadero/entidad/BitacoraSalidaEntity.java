@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 
-@Entity(name = "BitacoraSalida")
+@Entity(name = "bitacorasalida")
 public class BitacoraSalidaEntity {
 
 	@Id

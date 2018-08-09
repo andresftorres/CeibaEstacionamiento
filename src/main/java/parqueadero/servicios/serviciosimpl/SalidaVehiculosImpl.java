@@ -2,18 +2,16 @@ package parqueadero.servicios.serviciosimpl;
 
 
 import java.util.Calendar;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import parqueadero.builder.BitacoraIngresoBuilder;
-import parqueadero.builder.VehiculoBuilder;
-import parqueadero.dominio.BitacoraIngreso;
 import parqueadero.dominio.ParametrosParqueadero;
 import parqueadero.dominio.RespuestaPeticion;
-import parqueadero.dominio.Vehiculo;
 import parqueadero.entidad.BitacoraIngresoEntity;
 import parqueadero.entidad.BitacoraSalidaEntity;
+import parqueadero.entidad.VehiculoEntity;
 import parqueadero.exception.ParqueaderoException;
 import parqueadero.factorypattern.ConstantesTipoVehiculo;
 import parqueadero.factorypattern.FactoryRestriccionesTarifas;
@@ -50,43 +48,44 @@ public class SalidaVehiculosImpl implements SalidaVehiculoServicio {
 	@Override
 	public RespuestaPeticion registrarSalidaDeVehiculo(String placa) throws ParqueaderoException {
 		
-		Vehiculo vehiculo = vehiculoRepo.findByPlaca(placa);		
+		VehiculoEntity vehiculo = vehiculoRepo.findByPlaca(placa);		
 		
 		if( !validacionesServicios.vehiculoEnParqueadero(vehiculo.getPlaca()) )  {
 			throw new ParqueaderoException(ParametrosParqueadero.EL_VEHICULO_NO_ESTA_EN_EL_PARQUEADERO);
 		}					
 		
-		BitacoraIngreso bitacoraIngreso = ingresoVehiculoServicio.consultaIngresoActivo(vehiculo.getPlaca());	
-		bitacoraIngreso.setEnPaqueadero(NO_ESTA_EN_PARQUEADERO);		
+		BitacoraIngresoEntity bitacoraIngreso = ingresoVehiculoServicio.consultaIngresoActivo(vehiculo.getPlaca());	
+		bitacoraIngreso.setEnPaqueadero(NO_ESTA_EN_PARQUEADERO);
 		
-		BitacoraIngresoEntity biacoraIngresoEntity = bitacoraIngresoRepo.save(BitacoraIngresoBuilder.convertirAEntity(bitacoraIngreso));
+		BitacoraIngresoEntity biacoraIngresoEntity = bitacoraIngresoRepo.save(bitacoraIngreso);
 		
 		Calendar fechaSalida = Calendar.getInstance();		
 		
 	    ConstantesTipoVehiculo configuracionVehiculo = FactoryRestriccionesTarifas.obtenerDatosConfiguracion( vehiculo.getTipoVehiculo());    
 		    
 		double valorTotal = calcularValorAPagar( 
-				biacoraIngresoEntity, 
+				biacoraIngresoEntity.getFechaIngreso(), 
 				fechaSalida, 
 				configuracionVehiculo,
 				vehiculo.getCilindraje()
 		);		
 		
 		BitacoraSalidaEntity bitacoraSalidaEntity = new BitacoraSalidaEntity(
-				VehiculoBuilder.convertirAEntity(vehiculo), 
+				vehiculo, 
 				bitacoraIngreso.getFechaIngreso(), 
 				fechaSalida, 
 				valorTotal);	
 		 
-		return new RespuestaPeticion(bitacoraSalidaRepo.save(bitacoraSalidaEntity).getId().toString(), ParametrosParqueadero.SALIDA_REGISTRADA_EXITOSAMENTE);
+		bitacoraSalidaRepo.save(bitacoraSalidaEntity);
+		return new RespuestaPeticion("", ParametrosParqueadero.SALIDA_REGISTRADA_EXITOSAMENTE);
 	}	
 	
-	private double calcularValorAPagar(BitacoraIngresoEntity bitacoraIngresoEntity, Calendar fechaSalida, ConstantesTipoVehiculo constantesVehiculo, double cilindraje){
+	public double calcularValorAPagar(Calendar fechaIngreso, Calendar fechaSalida, ConstantesTipoVehiculo constantesVehiculo, double cilindraje){
 		
 		double valor;
 		double totalHorasEnParqueadero;
 		
-		totalHorasEnParqueadero = horasEnParqueadero(bitacoraIngresoEntity.getFechaIngreso(), fechaSalida );		
+		totalHorasEnParqueadero = horasEnParqueadero(fechaIngreso.getTime(), fechaSalida.getTime() );		
 		
 		valor = valorXCobrar(totalHorasEnParqueadero, constantesVehiculo.obtenerValorHora(), constantesVehiculo.obtenerValorDia());
 		
@@ -97,9 +96,9 @@ public class SalidaVehiculosImpl implements SalidaVehiculoServicio {
 		
 	}
 	
-	private double horasEnParqueadero(Calendar fechaingreso, Calendar fechaSalida) {
+	private double horasEnParqueadero(Date fechaingreso, Date fechaSalida) {
 		
-		return (fechaSalida.getTimeInMillis() - fechaingreso.getTimeInMillis()) / HORA_EN_MILISEGUNDOS;
+		return TimeUnit.HOURS.convert(Math.abs(fechaSalida.getTime() - fechaingreso.getTime()), TimeUnit.MILLISECONDS) + 1;
 		
 	}
 	

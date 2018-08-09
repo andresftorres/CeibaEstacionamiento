@@ -9,7 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity(name = "Vehiculo")
+@Entity(name = "vehiculo")
 public class VehiculoEntity {
 
 	@Id
@@ -28,6 +28,10 @@ public class VehiculoEntity {
 	@Column(name = "CILINDRAJE", nullable = false)
 	private double cilindraje;
 
+	public VehiculoEntity() {
+		
+	}
+	
 	public VehiculoEntity(String placa,TipoVehiculo tipoVehiculo, double cilindraje) {
 		this.placa = placa;
 		this.tipoVehiculo = tipoVehiculo;

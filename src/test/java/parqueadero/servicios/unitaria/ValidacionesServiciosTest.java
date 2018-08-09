@@ -157,9 +157,9 @@ public class ValidacionesServiciosTest {
 		Vehiculo vehiculo = new VehiculoTestDataBuilder().conTipoVehiculo(TIPO_VEHICULO_AUTOMOVIL)
 				.conPlaca(PLACA_AUTORIZADA).build();
 
-		
+		VehiculoEntity vehiculoEntity = VehiculoBuilder.convertirAEntity(vehiculo);
 		bitacoraIngresoRepo = mock(BitacoraIngresoRepository.class);
-		when(bitacoraIngresoRepo.vehiculoEnParqueadero(any())).thenReturn(vehiculo);
+		when(bitacoraIngresoRepo.vehiculoEnParqueadero(any())).thenReturn(vehiculoEntity);
 
 		ReflectionTestUtils.setField(validaciones, "bitacoraIngresoRepo", bitacoraIngresoRepo);
 		

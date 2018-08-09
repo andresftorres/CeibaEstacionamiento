@@ -10,7 +10,6 @@ import java.util.Calendar;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import parqueadero.servicios.IngresoVehiculoServicio;
 import parqueadero.dominio.ParametrosParqueadero;
 import parqueadero.dominio.Vehiculo;

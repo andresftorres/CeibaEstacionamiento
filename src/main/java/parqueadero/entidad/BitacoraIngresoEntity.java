@@ -33,7 +33,7 @@ public class BitacoraIngresoEntity {
 	@Column(name = "FECHA_INGRESO", nullable = false)
 	private Calendar fechaIngreso;
 
-	@Column(name = "ENPARQUEADERO", nullable = false)
+	@Column(name = "EN_PARQUEADERO", nullable = false)
 	private boolean enPaqueadero;
 
 	public BitacoraIngresoEntity(){

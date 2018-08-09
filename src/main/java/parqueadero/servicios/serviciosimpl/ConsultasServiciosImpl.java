@@ -35,15 +35,15 @@ public class ConsultasServiciosImpl implements ConsultaServicios {
 	@Override
 	public RespuestaConsulta consultaVehiculo(String placa) throws ParqueaderoException {
 
-		BitacoraIngreso bitacoraActiva = bitacoraingresos.bitacoraIngresoByPlaca(placa);		
+		BitacoraIngresoEntity bitacoraActiva = bitacoraingresos.bitacoraIngresoByPlaca(placa);		
 		String placaVehiculo = bitacoraActiva.getVehiculo().getPlaca();		
-		Vehiculo vehiculoEnParquadero = vehiculoRepo.findByPlaca(placaVehiculo);
+		VehiculoEntity vehiculoEnParquadero = vehiculoRepo.findByPlaca(placaVehiculo);
 		
-		Vehiculo vehiculoRespuesta;
+		VehiculoEntity vehiculoRespuesta;
 		if( vehiculoEnParquadero != null ) {
 			vehiculoRespuesta = vehiculoEnParquadero;
 			
-			return crearRespuesta(bitacoraActiva, vehiculoRespuesta);
+			return crearRespuesta(BitacoraIngresoBuilder.convertirADominio(bitacoraActiva),VehiculoBuilder.convertirADominio(vehiculoRespuesta));
 		} else {
 			throw new ParqueaderoException(ParametrosParqueadero.EL_VEHICULO_NO_ESTA_EN_PARQUEADERO);
 		}			

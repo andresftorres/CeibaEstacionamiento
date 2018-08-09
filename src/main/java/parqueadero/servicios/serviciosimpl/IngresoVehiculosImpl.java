@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import parqueadero.builder.VehiculoBuilder;
-import parqueadero.dominio.BitacoraIngreso;
 import parqueadero.dominio.ParametrosParqueadero;
 import parqueadero.dominio.RespuestaPeticion;
 import parqueadero.dominio.Vehiculo;
@@ -50,15 +49,15 @@ public class IngresoVehiculosImpl implements IngresoVehiculoServicio {
 			throw new ParqueaderoException(ParametrosParqueadero.SIN_CUPO_PARA_VEHICULO);
 		}
 				
-		Vehiculo vehiculoAIngresar = vehiculoRepo.findByPlaca(vehiculo.getPlaca());
+		VehiculoEntity vehiculoAIngresar = vehiculoRepo.findByPlaca(vehiculo.getPlaca());
 		
 		VehiculoEntity vehiculoRegistrado;
 		if( vehiculoAIngresar == null) {		
 		
-			vehiculoAIngresar = vehiculo;		
-			vehiculoRegistrado = vehiculoRepo.save( VehiculoBuilder.convertirAEntity(vehiculoAIngresar));			
+			vehiculoAIngresar = VehiculoBuilder.convertirAEntity(vehiculo);		
+			vehiculoRegistrado = vehiculoRepo.save( vehiculoAIngresar);			
 		} else {
-			vehiculoRegistrado = VehiculoBuilder.convertirAEntity(vehiculoAIngresar);
+			vehiculoRegistrado = vehiculoAIngresar;
 		}		
 		
 		BitacoraIngresoEntity bitacoraIngresoEntity = new BitacoraIngresoEntity(
@@ -66,13 +65,13 @@ public class IngresoVehiculosImpl implements IngresoVehiculoServicio {
 				fechaIngreso,
 				ENPARQUEADERO
 		);
-		
-		return new RespuestaPeticion(bitacoraIngresoRepo.save( bitacoraIngresoEntity).getId().toString(), ParametrosParqueadero.REGISTRO_EXITOSO);
+		bitacoraIngresoRepo.save( bitacoraIngresoEntity);
+		return new RespuestaPeticion("", ParametrosParqueadero.REGISTRO_EXITOSO);
 		
 	}
 
 	@Override
-	public BitacoraIngreso consultaIngresoActivo(String placa) {
+	public BitacoraIngresoEntity consultaIngresoActivo(String placa) {
 
 		return bitacoraIngresoRepo.bitacoraIngresoByPlaca(placa);
 		
