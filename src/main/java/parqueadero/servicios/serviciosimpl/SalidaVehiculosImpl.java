@@ -98,13 +98,13 @@ public class SalidaVehiculosImpl implements SalidaVehiculoServicio {
 	
 	private double horasEnParqueadero(Date fechaingreso, Date fechaSalida) {
 		
-		return TimeUnit.HOURS.convert(Math.abs(fechaSalida.getTime() - fechaingreso.getTime()), TimeUnit.MILLISECONDS) + 1;
+		return TimeUnit.HOURS.convert(Math.abs(fechaSalida.getTime() - fechaingreso.getTime()), TimeUnit.MILLISECONDS) ;
 		
 	}
 	
 	private double valorXCobrar (double horas,double valorHora,  double valorDia) {		
 		
-		double dias = horas / ParametrosParqueadero.HORAS_INICIO_DIA;
+		double dias = horas / ParametrosParqueadero.TOTAL_HORAS_DIA;
 		
 		double valor = Math.floor(dias) * valorDia;
 		

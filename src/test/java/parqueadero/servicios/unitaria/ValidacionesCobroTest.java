@@ -16,16 +16,14 @@ public class ValidacionesCobroTest {
 
 	
 	@Test
-	public void calcularValorAPagar_cobroMotocicleta29HorasAltoCilindraje() {
+	public void calcularValorAPagar_cobroMotocicleta25HorasAltoCilindraje() {
 		//arrange
 		
-		Calendar calIngreso = Calendar.getInstance();
-	
+		Calendar calIngreso = Calendar.getInstance();	
 		calIngreso.set(2018, 8, 7, 1, 0);
 		
-		Calendar calSalida = Calendar.getInstance();
-	
-		calSalida.set(2018, 8, 8, 1, 0);
+		Calendar calSalida = Calendar.getInstance();	
+		calSalida.set(2018, 8, 8, 2, 0);
 		
 		ConstantesTipoVehiculo configuracion = null;
 		
@@ -49,11 +47,11 @@ public class ValidacionesCobroTest {
 		
 		Calendar calIngreso = Calendar.getInstance();
 		
-		calIngreso.set(2018, 8, 7, 0, 0);
+		calIngreso.set(2018, 8, 7, 1, 0);
 		
 		Calendar calSalida = Calendar.getInstance();
 		
-		calSalida.set(2018, 8, 8, 2, 0);
+		calSalida.set(2018, 8, 8, 4, 0);
 		
 		ConstantesTipoVehiculo configuracion = null;
 		
