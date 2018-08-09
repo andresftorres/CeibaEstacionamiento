@@ -1,6 +1,5 @@
 package parqueadero.dominio;
 
-import parqueadero.entidad.TipoVehiculo;
 
 public final class ParametrosParqueadero {
 

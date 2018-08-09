@@ -6,9 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
-import parqueadero.dominio.BitacoraIngreso;
-import parqueadero.dominio.Vehiculo;
 import parqueadero.entidad.BitacoraIngresoEntity;
 import parqueadero.entidad.VehiculoEntity;
 
