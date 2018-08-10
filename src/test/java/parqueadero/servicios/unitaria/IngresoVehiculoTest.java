@@ -16,7 +16,7 @@ import parqueadero.dominio.Vehiculo;
 import parqueadero.entidad.TipoVehiculo;
 import parqueadero.repository.BitacoraIngresoRepository;
 
-public class ValidacionesIngresoTest {
+public class IngresoVehiculoTest {
 
 	private static final String PLACANOAUTORIADA = "ABC-123";
 	private static final String PLACAAUTORIZADA = "BCD-123";

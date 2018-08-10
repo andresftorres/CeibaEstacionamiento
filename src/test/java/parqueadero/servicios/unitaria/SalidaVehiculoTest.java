@@ -34,7 +34,7 @@ import parqueadero.testDataBuilder.VehiculoTestDataBuilder;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class ValidacionesSalidaTest {
+public class SalidaVehiculoTest {
 
 	@Mock
 	BitacoraSalidaRepository bitacoraSalidaRepo;
