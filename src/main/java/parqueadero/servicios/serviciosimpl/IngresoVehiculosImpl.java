@@ -49,7 +49,7 @@ public class IngresoVehiculosImpl implements IngresoVehiculoServicio {
 			throw new ParqueaderoException(ParametrosParqueadero.SIN_CUPO_PARA_VEHICULO);
 		}
 				
-		VehiculoEntity vehiculoAIngresar = vehiculoRepo.findByPlaca(vehiculo.getPlaca());
+		VehiculoEntity vehiculoAIngresar = vehiculoRepo.buscarPorPlaca(vehiculo.getPlaca());
 		
 		VehiculoEntity vehiculoRegistrado;
 		if( vehiculoAIngresar == null) {		
@@ -66,7 +66,7 @@ public class IngresoVehiculosImpl implements IngresoVehiculoServicio {
 				ENPARQUEADERO
 		);
 		bitacoraIngresoRepo.save( bitacoraIngresoEntity);
-		return new RespuestaPeticion("", ParametrosParqueadero.REGISTRO_EXITOSO);
+		return new RespuestaPeticion(bitacoraIngresoEntity.getId().toString(), ParametrosParqueadero.REGISTRO_EXITOSO);
 		
 	}
 

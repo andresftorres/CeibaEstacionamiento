@@ -2,8 +2,8 @@ package parqueadero.controlador;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +26,7 @@ public class ConsultaVehiculosController {
 	@Autowired
 	BitacoraIngresoRepository bitacoraIngresoRepo;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(BitacoraIngresoControlador.class);
+	private static final Log LOGGER = LogFactory.getLog(ConsultaVehiculosController.class);
 
 	@RequestMapping(value = ParametrosParqueadero.RUTA_TODOS_LOS_VEHICULOS, method = RequestMethod.GET)
 	public List<RespuestaConsulta> consultarVehiculos() {
@@ -34,7 +34,7 @@ public class ConsultaVehiculosController {
 		try {
 			listaTodosVehiclos = consultaServicios.obtenerTodosVehiculos();
 		} catch (ParqueaderoException e) {
-			LOGGER.info("ParqueaderoException ", e);
+			LOGGER.error("ParqueaderoException ", e);
 		}
 		return listaTodosVehiclos;
 	}
@@ -45,7 +45,7 @@ public class ConsultaVehiculosController {
 		try {
 			respuestaConsulta = consultaServicios.consultaVehiculo(placa);
 		} catch (ParqueaderoException e) {
-			LOGGER.info("ParqueaderoException ", e);
+			LOGGER.error("ParqueaderoException ", e);
 		}
 		return respuestaConsulta;
 	}

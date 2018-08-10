@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
@@ -33,9 +35,11 @@ public class BitacoraSalidaEntity {
 	private VehiculoEntity vehiculo;
 
 	@Column(name = "FECHA_INGRESO", nullable = false)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Calendar fechaIngreso;
 
 	@Column(name = "FECHA_SALIDA", nullable = false)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Calendar fechaSalida;
 
 	@Column(name = "VALOR_TOTAL", nullable = false)

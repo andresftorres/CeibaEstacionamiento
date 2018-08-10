@@ -1,8 +1,8 @@
 package parqueadero.controlador;
 
 import java.util.Calendar;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ import parqueadero.dominio.Vehiculo;
 @RequestMapping( ParametrosParqueadero.API )
 public class BitacoraIngresoControlador {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(BitacoraIngresoControlador.class);
+	private static final Log LOGGER = LogFactory.getLog(BitacoraIngresoControlador.class);
 	
 	@Autowired
 	private IngresoVehiculoServicio ingresoVehiculoServicio;
@@ -31,11 +31,9 @@ public class BitacoraIngresoControlador {
 	public ResponseEntity<RespuestaPeticion> registrarIngresoVehiculo(@RequestBody(required = true) Vehiculo automovil) {		
 		try {
 			return new ResponseEntity<>(ingresoVehiculoServicio.registrarIngresoVehiculo(automovil, calculaFechaIngreso()), HttpStatus.OK );
-		} catch (ParqueaderoException e) {			
-			LOGGER.error("ParqueaderoException ", e);
-			
-			return new ResponseEntity<>( new RespuestaPeticion( e.getMessage(), e.getDescripion()), HttpStatus.OK);
-			
+		} catch (ParqueaderoException e) {	
+			LOGGER.info(e);
+			return new ResponseEntity<>( new RespuestaPeticion( e.getMessage(), e.getDescripion()), HttpStatus.OK);			
 		}
 	}	
 			

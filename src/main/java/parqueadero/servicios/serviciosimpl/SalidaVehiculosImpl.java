@@ -46,11 +46,11 @@ public class SalidaVehiculosImpl implements SalidaVehiculoServicio {
 	IngresoVehiculoServicio ingresoVehiculoServicio;
 		
 	@Override
-	public RespuestaPeticion registrarSalidaDeVehiculo(String placa) throws ParqueaderoException {
+	public RespuestaPeticion registrarSalidaDeVehiculo(String placaVehiculo) throws ParqueaderoException {
 		
-		VehiculoEntity vehiculo = vehiculoRepo.findByPlaca(placa);		
+		VehiculoEntity vehiculo = vehiculoRepo.vehiculoEnParqueadero(placaVehiculo);
 		
-		if( !validacionesServicios.vehiculoEnParqueadero(vehiculo.getPlaca()) )  {
+		if( vehiculo == null )  {
 			throw new ParqueaderoException(ParametrosParqueadero.EL_VEHICULO_NO_ESTA_EN_EL_PARQUEADERO);
 		}					
 		
@@ -75,7 +75,7 @@ public class SalidaVehiculosImpl implements SalidaVehiculoServicio {
 				bitacoraIngreso.getFechaIngreso(), 
 				fechaSalida, 
 				valorTotal);	
-		 
+
 		bitacoraSalidaRepo.save(bitacoraSalidaEntity);
 		return new RespuestaPeticion("", ParametrosParqueadero.SALIDA_REGISTRADA_EXITOSAMENTE);
 	}	
@@ -86,7 +86,7 @@ public class SalidaVehiculosImpl implements SalidaVehiculoServicio {
 		double totalHorasEnParqueadero;
 		
 		totalHorasEnParqueadero = horasEnParqueadero(fechaIngreso.getTime(), fechaSalida.getTime() );		
-		
+		totalHorasEnParqueadero = totalHorasEnParqueadero == 0? 1 : totalHorasEnParqueadero; 
 		valor = valorXCobrar(totalHorasEnParqueadero, constantesVehiculo.obtenerValorHora(), constantesVehiculo.obtenerValorDia());
 		
 		if ( constantesVehiculo.cilidrageMaximo() > 0 && cilindraje > constantesVehiculo.cilidrageMaximo()) {

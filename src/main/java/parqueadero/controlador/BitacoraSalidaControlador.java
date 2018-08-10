@@ -1,7 +1,7 @@
 package parqueadero.controlador;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +20,8 @@ import parqueadero.servicios.SalidaVehiculoServicio;
 @RequestMapping( ParametrosParqueadero.API )
 public class BitacoraSalidaControlador {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(BitacoraSalidaControlador.class);
+	
+	private static final Log LOGGER = LogFactory.getLog(BitacoraSalidaControlador.class);
 	
 	@Autowired	
 	private SalidaVehiculoServicio salidaVehiculoServicio;		
@@ -32,7 +33,7 @@ public class BitacoraSalidaControlador {
 			return new ResponseEntity<>(salidaVehiculoServicio.registrarSalidaDeVehiculo(placa) , HttpStatus.OK );
 			
 		} catch (ParqueaderoException e) {
-			LOGGER.info("ParqueaderoException ", e);			
+			LOGGER.error("ParqueaderoException ", e);			
 			return new ResponseEntity<>( new RespuestaPeticion(e.getMessage(), e.getDescripion()) ,HttpStatus.OK);
 		}
 		

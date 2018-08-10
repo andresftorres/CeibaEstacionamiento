@@ -16,6 +16,7 @@ public final class ParametrosParqueadero {
 	public static final String EL_VEHICULO_NO_ESTA_EN_PARQUEADERO = "El parqueadero esta vacío.";
 	public static final String REGISTRO_EXITOSO = "Bitacora de ingreso registrado exitosamente.";
 	public static final String SALIDA_REGISTRADA_EXITOSAMENTE = "Bitacora de salida registrado exitosamente.";
+	public static final String VEHICULO_NO_TIENE_REGISTRO = "El vehiculo no tiene registro de ingreso al parqueadero.";
 	
 	public static final String TIPOS_DE_VEHICULOS_PERMITIDOS = "Motocicleta,Automovil";
 	public static final String LETRA_PARA_VALIDAR_PLACAS = "A";
@@ -23,8 +24,8 @@ public final class ParametrosParqueadero {
 	//Rutas de acceso
 	public static final String API = "api";
 	public static final String RUTA_INGRESO = "/ingresovehiculo";	
-	public static final String RUTA_SALIDA = "/salidavehiculo";
-	public static final String RUTA_CONSULTA = "/parqueadero/{placa}";
+	public static final String RUTA_SALIDA = "/salidavehiculo/{placa}";
+	public static final String RUTA_CONSULTA = "/consulta/{placa}";
 	public static final String RUTA_TODOS_LOS_VEHICULOS = "/parqueadero";
 	
 	//Sistema de cobro carro

@@ -9,7 +9,7 @@ import java.util.Calendar;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.Mock;
 import parqueadero.servicios.IngresoVehiculoServicio;
 import parqueadero.dominio.ParametrosParqueadero;
 import parqueadero.dominio.Vehiculo;
@@ -26,10 +26,10 @@ public class ValidacionesIngresoTest {
 	private static final String FECHA_SOLICITUD = "2017-05-26";
 	private static final double SIN_CILINDRAJE = Double.NaN;
 
-	@Autowired
+	@Mock
 	IngresoVehiculoServicio ingresoService;
 	
-	@Autowired
+	@Mock
 	BitacoraIngresoRepository bitacoraingresoRepo;
 
 	@Test
@@ -165,19 +165,5 @@ public class ValidacionesIngresoTest {
 			Assert.assertNotEquals(ParametrosParqueadero.SIN_CUPO_PARA_VEHICULO, ex.getMessage());
 		}
 	}
-	/*
-	@Test
-	public void consultaIngresoActivo_VehiculoNoActivoEnParqueadero(String placa) {			
-		//Arrange
-		
-		//BitacoraIngresoEntity bitacoraIngresoEntity;
-		//when(bitacoraingresoRepo.bitacoraIngresoAutoByPlaca(placa)).thenReturn(bitacoraIngresoEntity);
-		
-		//Act
-		//boolean esActivoEnParqueadero = ingresoService.consultaIngresoActivo(PLACAAUTORIZADA);
-		//Assert
-		//Assert.assertNotNull();
-				
-	}	
-*/
+	
 }

@@ -3,25 +3,15 @@ package parqueadero.servicios.unitaria;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
-
-import junit.framework.Assert;
-
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
-
 import parqueadero.builder.BitacoraIngresoBuilder;
 import parqueadero.builder.VehiculoBuilder;
 import parqueadero.dominio.BitacoraIngreso;
@@ -32,8 +22,6 @@ import parqueadero.entidad.BitacoraIngresoEntity;
 import parqueadero.entidad.TipoVehiculo;
 import parqueadero.entidad.VehiculoEntity;
 import parqueadero.exception.ParqueaderoException;
-import parqueadero.factorypattern.ConstantesTipoVehiculo;
-import parqueadero.factorypattern.FactoryRestriccionesTarifas;
 import parqueadero.repository.BitacoraIngresoRepository;
 import parqueadero.repository.BitacoraSalidaRepository;
 import parqueadero.repository.VehiculoRepository;
@@ -47,15 +35,6 @@ import parqueadero.testDataBuilder.VehiculoTestDataBuilder;
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class ValidacionesSalidaTest {
-
-	private static final String PLACANOAUTORIADA = "ABC-123";
-	private static final String PLACAAUTORIZADA = "BCD-123";
-	private static final String TIPOVEHICULO = TipoVehiculo.AUTOMOVIL.getCodigo();
-	private static final String TIPOVEHICULOBICICLETA = "B";
-	private static final int CANTIDAD_MAXIMA_MOTOS = 10;
-	private static final double CILINDRAJE = 600;
-	private static final String FECHA_SOLICITUD = "2017-05-26";
-	private static final String FECHA_MIERCOLES_8 = "2018-08-08";
 
 	@Mock
 	BitacoraSalidaRepository bitacoraSalidaRepo;
@@ -89,10 +68,10 @@ public class ValidacionesSalidaTest {
 		VehiculoEntity vehiculoEntity = VehiculoBuilder.convertirAEntity(nuevo);
 		
 		vehiculoRepo = mock(VehiculoRepository.class);
-		when(vehiculoRepo.findByPlaca(any())).thenReturn(vehiculoEntity);
+		when(vehiculoRepo.buscarPorPlaca(any())).thenReturn(vehiculoEntity);
 		
 		bitacoraIngresoRepo = mock(BitacoraIngresoRepository.class);
-		when(bitacoraIngresoRepo.vehiculoEnParqueadero(any())).thenReturn(vehiculoEntity);
+		when(vehiculoRepo.vehiculoEnParqueadero(any())).thenReturn(vehiculoEntity);
 		
 		BitacoraIngreso nuevaBitacorangreso = new BitacoraIngresoTestDataBuilder().conVehiculo(nuevo)
 				.conEnPaqueadero(true)
@@ -147,10 +126,10 @@ public class ValidacionesSalidaTest {
 		VehiculoEntity motoEntity = VehiculoBuilder.convertirAEntity(motocicleta);
 		
 		vehiculoRepo = mock(VehiculoRepository.class);
-		when(vehiculoRepo.findByPlaca(any())).thenReturn(motoEntity);
+		when(vehiculoRepo.buscarPorPlaca(any())).thenReturn(motoEntity);
 		
 		bitacoraIngresoRepo = mock(BitacoraIngresoRepository.class);
-		when(bitacoraIngresoRepo.vehiculoEnParqueadero(any())).thenReturn(null);		
+		when(vehiculoRepo.vehiculoEnParqueadero(any())).thenReturn(null);		
 		
 		ReflectionTestUtils.setField(salidaServicio, "vehiculoRepo", vehiculoRepo);
 		ReflectionTestUtils.setField(salidaServicio, "bitacoraIngresoRepo", bitacoraIngresoRepo);
@@ -158,13 +137,12 @@ public class ValidacionesSalidaTest {
 		ReflectionTestUtils.setField(salidaServicio, "validacionesServicios", validacionesServicios);
 		ReflectionTestUtils.setField(salidaServicio, "bitacoraSalidaRepo", bitacoraSalidaRepo);
 		
-		RespuestaPeticion respuesta;
 		try {
 			// Act
-			respuesta = salidaServicio.registrarSalidaDeVehiculo("BCD-123");	
+			RespuestaPeticion respuesta = salidaServicio.registrarSalidaDeVehiculo("000-123");
 			fail();			
-		} catch (ParqueaderoException e) {
-			// Assert
+		} catch (ParqueaderoException e) {			// Assert 
+			
 			assertEquals(ParametrosParqueadero.EL_VEHICULO_NO_ESTA_EN_EL_PARQUEADERO, e.getDescripion());
 			
 		}
@@ -186,10 +164,10 @@ public class ValidacionesSalidaTest {
 		VehiculoEntity vehiculoEntity = VehiculoBuilder.convertirAEntity(nuevo);
 		
 		vehiculoRepo = mock(VehiculoRepository.class);
-		when(vehiculoRepo.findByPlaca(any())).thenReturn(vehiculoEntity);
+		when(vehiculoRepo.buscarPorPlaca(any())).thenReturn(vehiculoEntity);
 		
 		bitacoraIngresoRepo = mock(BitacoraIngresoRepository.class);
-		when(bitacoraIngresoRepo.vehiculoEnParqueadero(any())).thenReturn(vehiculoEntity);
+		when(vehiculoRepo.vehiculoEnParqueadero(any())).thenReturn(vehiculoEntity);
 		
 		Calendar ingreso = Calendar.getInstance();
 		ingreso.set(2018, 8, 7, 0, 0);

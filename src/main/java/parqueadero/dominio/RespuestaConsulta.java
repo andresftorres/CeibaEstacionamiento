@@ -7,19 +7,15 @@ public class RespuestaConsulta {
 	private String placa;
 	private String tipoVehiculo;
 	private Calendar fechingreso;
-	private String codigo;
-	private String mensaje;
 
 	public RespuestaConsulta() {
 
 	}
 
-	public RespuestaConsulta(String placa, String tipoVehiculo, Calendar fechingreso, String codigo, String mensaje) {
+	public RespuestaConsulta(String placa, String tipoVehiculo, Calendar fechingreso) {
 		this.placa = placa;
 		this.tipoVehiculo = tipoVehiculo;
 		this.fechingreso = fechingreso;
-		this.codigo = codigo;
-		this.mensaje = mensaje;
 	}
 
 	public String getPlaca() {
@@ -45,22 +41,5 @@ public class RespuestaConsulta {
 	public void setFechingreso(Calendar fechingreso) {
 		this.fechingreso = fechingreso;
 	}
-
-	public String getCodigo() {
-		return codigo;
-	}
-
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
-	}
-
-	public String getMensaje() {
-		return mensaje;
-	}
-
-	public void setMensaje(String mensaje) {
-		this.mensaje = mensaje;
-	}
-
 	
 }

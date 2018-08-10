@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,8 @@ import parqueadero.servicios.ConsultaServicios;
 @Service
 public class ConsultasServiciosImpl implements ConsultaServicios {
 
+	private static final Log LOGGER = LogFactory.getLog(ConsultasServiciosImpl.class);
+
 	@Autowired
 	BitacoraIngresoRepository bitacoraingresos;
 
@@ -34,19 +38,25 @@ public class ConsultasServiciosImpl implements ConsultaServicios {
 
 	@Override
 	public RespuestaConsulta consultaVehiculo(String placa) throws ParqueaderoException {
+		BitacoraIngresoEntity bitacoraActiva = null;
+		try {
+			bitacoraActiva = bitacoraingresos.bitacoraIngresoByPlaca(placa);
+		} catch (Exception e) {
+			LOGGER.error(e);
+			throw new ParqueaderoException(ParametrosParqueadero.VEHICULO_NO_TIENE_REGISTRO);
+		}
+		String placaVehiculo = bitacoraActiva.getVehiculo().getPlaca();
+		VehiculoEntity vehiculoEnParquadero = vehiculoRepo.buscarPorPlaca(placaVehiculo);
 
-		BitacoraIngresoEntity bitacoraActiva = bitacoraingresos.bitacoraIngresoByPlaca(placa);		
-		String placaVehiculo = bitacoraActiva.getVehiculo().getPlaca();		
-		VehiculoEntity vehiculoEnParquadero = vehiculoRepo.findByPlaca(placaVehiculo);
-		
 		VehiculoEntity vehiculoRespuesta;
-		if( vehiculoEnParquadero != null ) {
+		if (vehiculoEnParquadero != null) {
 			vehiculoRespuesta = vehiculoEnParquadero;
-			
-			return crearRespuesta(BitacoraIngresoBuilder.convertirADominio(bitacoraActiva),VehiculoBuilder.convertirADominio(vehiculoRespuesta));
+
+			return crearRespuesta(BitacoraIngresoBuilder.convertirADominio(bitacoraActiva),
+					VehiculoBuilder.convertirADominio(vehiculoRespuesta));
 		} else {
 			throw new ParqueaderoException(ParametrosParqueadero.EL_VEHICULO_NO_ESTA_EN_PARQUEADERO);
-		}			
+		}
 	}
 
 	@Override
@@ -68,12 +78,8 @@ public class ConsultasServiciosImpl implements ConsultaServicios {
 				if (vehiculoRespuesta.isPresent()) {
 					vehiculoEntity = vehiculoRespuesta.get();
 
-					objetosRespuestaConslta.add(
-							crearRespuesta(
-									BitacoraIngresoBuilder.convertirADominio(bitacoraActual), 
-									VehiculoBuilder.convertirADominio(vehiculoEntity)
-							)
-					);
+					objetosRespuestaConslta.add(crearRespuesta(BitacoraIngresoBuilder.convertirADominio(bitacoraActual),
+							VehiculoBuilder.convertirADominio(vehiculoEntity)));
 				}
 			}
 			return objetosRespuestaConslta;
@@ -83,8 +89,7 @@ public class ConsultasServiciosImpl implements ConsultaServicios {
 	@Override
 	public RespuestaConsulta crearRespuesta(BitacoraIngreso biacoraActiva, Vehiculo vehiculoenParqueadero) {
 		return new RespuestaConsulta(vehiculoenParqueadero.getPlaca(),
-				vehiculoenParqueadero.getTipoVehiculo().getDescripcion(), biacoraActiva.getFechaIngreso(), null, null);
+				vehiculoenParqueadero.getTipoVehiculo().getDescripcion(), biacoraActiva.getFechaIngreso());
 	}
 
-    
 }

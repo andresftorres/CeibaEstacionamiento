@@ -9,9 +9,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -27,10 +28,11 @@ public class BitacoraIngresoEntity {
 	@JoinColumn(name = "ID_VEHICULO", nullable = false)
 	@JsonProperty("idVehiculo")
 	@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
-	@JsonIdentityReference(alwaysAsId=true)	
+	//@JsonIdentityReference(alwaysAsId=true)	
 	private VehiculoEntity vehiculo;
 
 	@Column(name = "FECHA_INGRESO", nullable = false)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Calendar fechaIngreso;
 
 	@Column(name = "EN_PARQUEADERO", nullable = false)

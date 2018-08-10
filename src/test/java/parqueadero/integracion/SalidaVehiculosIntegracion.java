@@ -5,10 +5,12 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.context.jdbc.SqlGroup;
@@ -20,10 +22,13 @@ import parqueadero.dominio.Vehiculo;
 import parqueadero.entidad.TipoVehiculo;
 import parqueadero.repository.VehiculoRepository;
 import parqueadero.testDataBuilder.VehiculoTestDataBuilder;
+import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 
 
 @RunWith(SpringRunner.class)
+@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Rollback(value=true)
 public class SalidaVehiculosIntegracion {	
 	
 	private static String PLACA_AUTORIZADA = "DBC-234";
@@ -45,11 +50,12 @@ public class SalidaVehiculosIntegracion {
 		
 		ResponseEntity<RespuestaPeticion> respuestaPeticion = null;	
 		
-		// acts
+		// acts		
 		respuestaPeticion = restTemplate.postForEntity("/api/ingresovehiculo", automovil, RespuestaPeticion.class);
+		
 		RespuestaPeticion respuestaBody = respuestaPeticion.getBody();
+		
 		// assert
-
 		assertEquals(HttpStatus.OK, respuestaPeticion.getStatusCode());
 		assertEquals(ParametrosParqueadero.TIPO_DE_VEHICULO_NO_AUTORIZADO,respuestaBody.getMensaje() );
 		

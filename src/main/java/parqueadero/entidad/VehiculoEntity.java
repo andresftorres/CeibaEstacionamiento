@@ -1,6 +1,5 @@
 package parqueadero.entidad;
 
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -11,15 +10,13 @@ import javax.persistence.Id;
 
 @Entity(name = "vehiculo")
 public class VehiculoEntity {
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID_VEHICULO", nullable = false)
-	private long id;
-
-	@Basic
+	private long id;	
+	
 	private String placa;
-
 	
 	@Column(name = "TIPOVEHICULO", nullable = false)
 	@Enumerated(EnumType.STRING)

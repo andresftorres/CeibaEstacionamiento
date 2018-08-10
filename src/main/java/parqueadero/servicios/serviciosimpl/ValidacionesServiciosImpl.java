@@ -13,6 +13,7 @@ import parqueadero.entidad.TipoVehiculo;
 import parqueadero.factorypattern.ConstantesTipoVehiculo;
 import parqueadero.factorypattern.FactoryRestriccionesTarifas;
 import parqueadero.repository.BitacoraIngresoRepository;
+import parqueadero.repository.VehiculoRepository;
 import parqueadero.servicios.ValidacionesServicios;
 
 @Service
@@ -23,6 +24,9 @@ public class ValidacionesServiciosImpl implements ValidacionesServicios{
 	
 	@Autowired
 	BitacoraIngresoRepository bitacoraIngresoRepo;	
+	
+	@Autowired
+	VehiculoRepository vehiculoRepo;
 	
 	
 	@Override
@@ -41,7 +45,7 @@ public class ValidacionesServiciosImpl implements ValidacionesServicios{
 		try {
 			configuracionVehiculo = FactoryRestriccionesTarifas.obtenerDatosConfiguracion(tipoVehiculo);
 			return motocicletasEnParqueadero < configuracionVehiculo.capacidadMaxima();			
-		} catch (Exception e) {	
+		} catch (Exception e) {
 			LOGGER.info("ParqueaderoException",e);
 			return false;
 		}	  
@@ -67,7 +71,7 @@ public class ValidacionesServiciosImpl implements ValidacionesServicios{
 	@Override
 	public boolean vehiculoEnParqueadero(String placaVehiculo) {	
 		
-		return bitacoraIngresoRepo.vehiculoEnParqueadero(placaVehiculo) != null; 
+		return vehiculoRepo.vehiculoEnParqueadero(placaVehiculo) != null; 
 	}
 
 

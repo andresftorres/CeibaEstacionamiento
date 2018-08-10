@@ -3,7 +3,6 @@ package parqueadero.servicios.unitaria;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mock;
-import static org.mockito.ArgumentMatchers.any;
 import org.springframework.test.util.ReflectionTestUtils;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -158,10 +157,11 @@ public class ValidacionesServiciosTest {
 				.conPlaca(PLACA_AUTORIZADA).build();
 
 		VehiculoEntity vehiculoEntity = VehiculoBuilder.convertirAEntity(vehiculo);
-		bitacoraIngresoRepo = mock(BitacoraIngresoRepository.class);
-		when(bitacoraIngresoRepo.vehiculoEnParqueadero(any())).thenReturn(vehiculoEntity);
+		vehiculoRepo = mock(VehiculoRepository.class);
+		when(vehiculoRepo.vehiculoEnParqueadero(vehiculo.getPlaca())).thenReturn(vehiculoEntity);
 
-		ReflectionTestUtils.setField(validaciones, "bitacoraIngresoRepo", bitacoraIngresoRepo);
+		bitacoraIngresoRepo = mock(BitacoraIngresoRepository.class);
+		ReflectionTestUtils.setField(validaciones, "vehiculoRepo", vehiculoRepo);
 		
 		// Act
 		boolean existeVehiculo = validaciones.vehiculoEnParqueadero(vehiculo.getPlaca());
